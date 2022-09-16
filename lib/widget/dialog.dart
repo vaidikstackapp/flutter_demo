@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_demo/service/user_service.dart';
 
-dialog(BuildContext context, String id) {
+dialog(BuildContext context, String? id) {
   return showDialog(
     context: context,
     builder: (context) {
@@ -15,7 +15,7 @@ dialog(BuildContext context, String id) {
           ElevatedButton(
               onPressed: () {
                 UserService userService = UserService();
-                userService.deleteUser(id);
+                userService.deleteUser(id!);
                 Navigator.pop(context);
               },
               child: const Text("Yes")),
