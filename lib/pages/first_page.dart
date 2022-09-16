@@ -34,7 +34,7 @@ class _FirstPageState extends State<FirstPage>
       appBar: AppBar(
         title: const Text("Firebase_demo"),
         centerTitle: true,
-        bottom: TabBar(controller: _tabController, tabs: const [
+        bottom: TabBar(indicatorColor: Colors.white,controller: _tabController, tabs: const [
           Tab(
             icon: Icon(Icons.login),
           ),

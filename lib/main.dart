@@ -10,8 +10,12 @@ Future<void> main() async {
     onTap: () {
       FocusManager.instance.primaryFocus?.unfocus();
     },
-    child:  const MaterialApp(
-      home: FirstPage(),
+    child:   MaterialApp(
+      home: const FirstPage(),
+      theme: ThemeData(
+        elevatedButtonTheme: ElevatedButtonThemeData(style: ButtonStyle(backgroundColor: MaterialStateProperty.all(const Color(0xff1ba294)))),
+        appBarTheme: const AppBarTheme(backgroundColor: Color(0xff1ba294))
+      ),
       debugShowCheckedModeBanner: false,
     ),
   ));

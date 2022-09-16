@@ -136,14 +136,26 @@ class _LoginPageState extends State<LoginPage> {
             InkWell(
               onTap: () async {
                 commonFuntion.signInWithGoogle(widget.tabController);
-                //await FirebaseAuth.instance.signOut();
               },
               child: Container(
-                height: 50,
-                decoration: const BoxDecoration(
-                    image: DecorationImage(
-                        image: NetworkImage(
-                            'https://onymos.com/wp-content/uploads/2020/10/google-signin-button.png'))),
+                height: 40,
+                width: 160,
+                decoration: BoxDecoration(
+                  color: const Color(0xff1ba294),
+                  borderRadius: BorderRadius.circular(5),
+                boxShadow: const [
+                  BoxShadow(color: Colors.black26,offset: Offset(0, 5),blurRadius: 5),
+
+                ]
+                ),
+                padding: const EdgeInsets.symmetric(horizontal: 5),
+                alignment: Alignment.center,
+                child: Row(
+                  children: [
+                    Image.asset("images/google (1).png",height: 20,width: 20,fit: BoxFit.cover,),
+                    const Text(" - Sign in with google",style: TextStyle(color: Colors.white)),
+                  ],
+                ),
               ),
             ),
           ],

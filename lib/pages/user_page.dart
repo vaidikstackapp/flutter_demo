@@ -23,7 +23,7 @@ class _UserPageState extends State<UserPage> {
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return const Center(
-                  child: CircularProgressIndicator(),
+                  child: CircularProgressIndicator(color: Color(0xff1ba294),),
                 );
               }
               return ListView.builder(physics: BouncingScrollPhysics(),
