@@ -1,10 +1,6 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_demo/model/user_model.dart';
 import 'package:flutter_demo/service/user_service.dart';
-
-import '../widget/dialog.dart';
-
 class UserPage extends StatefulWidget {
   TabController tabController;
 
