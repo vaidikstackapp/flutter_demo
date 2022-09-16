@@ -79,44 +79,49 @@ class _FirstPageState extends State<FirstPage>
   }
 
   emaliPassAuth(String email, String password) async {
-    try {
-      final credential =
-          await FirebaseAuth.instance.createUserWithEmailAndPassword(
-        email: email,
-        password: password,
-      );
-      //print("UID : ${credential.user}");
+    if (email.isNotEmpty &&
+        password.isNotEmpty &&
+        emailPatten.hasMatch(email) &&
+        passValid.hasMatch(password)) {
+      try {
+        final credential =
+            await FirebaseAuth.instance.createUserWithEmailAndPassword(
+          email: email,
+          password: password,
+        );
+        //print("UID : ${credential.user}");
 
-      if (credential.user != null) {
-        User? user = credential.user;
-        UserModel userModel = UserModel(
-            email: user!.email,
-            name: user.displayName ?? "",
-            phoneNumber: user.phoneNumber ?? "",
-            profileImage: user.photoURL ?? "",
-            uid: user.uid);
-        await userService.createUser(userModel);
+        if (credential.user != null) {
+          User? user = credential.user;
+          UserModel userModel = UserModel(
+              email: user!.email,
+              name: user.displayName ?? "",
+              phoneNumber: user.phoneNumber ?? "",
+              profileImage: user.photoURL ?? "",
+              uid: user.uid);
+          await userService.createUser(userModel);
+        }
+      } on FirebaseAuthException catch (e) {
+        if (e.code == 'weak-password') {
+        } else if (e.code == 'email-already-in-use') {
+          Fluttertoast.showToast(
+              msg: "The account already exists for that email",
+              toastLength: Toast.LENGTH_SHORT,
+              gravity: ToastGravity.CENTER,
+              timeInSecForIosWeb: 1,
+              backgroundColor: Colors.red,
+              textColor: Colors.white,
+              fontSize: 16.0);
+          tEmail.clear();
+          tPassword.clear();
+        }
+      } catch (e) {
+        print(e);
       }
-    } on FirebaseAuthException catch (e) {
-      if (e.code == 'weak-password') {
-      } else if (e.code == 'email-already-in-use') {
-        Fluttertoast.showToast(
-            msg: "The account already exists for that email",
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.CENTER,
-            timeInSecForIosWeb: 1,
-            backgroundColor: Colors.red,
-            textColor: Colors.white,
-            fontSize: 16.0);
-        tEmail.clear();
-        tPassword.clear();
-      }
-    } catch (e) {
-      //print(e);
+      tEmail.clear();
+      tPassword.clear();
+      _tabController.animateTo(_tabController.index + 1);
     }
-    tEmail.clear();
-    tPassword.clear();
-    _tabController.animateTo(_tabController.index + 1);
   }
 
   @override
@@ -173,13 +178,7 @@ class _FirstPageState extends State<FirstPage>
                           String password = tPassword.text;
                           check = true;
                           setState(() {});
-                          if (email.isNotEmpty &&
-                              password.isNotEmpty &&
-                              emailPatten.hasMatch(email) &&
-                              passValid.hasMatch(password)) {
-                            check = false;
-                            emaliPassAuth(email, password);
-                          }
+                          emaliPassAuth(email, password);
                         },
                         child: const Text("Submit")),
                     InkWell(
@@ -221,6 +220,7 @@ class _FirstPageState extends State<FirstPage>
                             trailing: IconButton(
                                 onPressed: () {
                                   dialog(context, document.id);
+                                  print("hello");
                                 },
                                 icon: const Icon(Icons.delete)),
                             title: (document['name'].toString().isNotEmpty)
@@ -248,26 +248,6 @@ class _FirstPageState extends State<FirstPage>
                       _tabController.animateTo(_tabController.index - 1);
                     },
                     child: const Icon(Icons.navigate_before)),
-                // Expanded(
-                //   child: StreamBuilder(
-                //     stream: userService.getAllUsers().asStream(),
-                //     builder: (context, snapshot) {
-                //       List<UserModel>? l = snapshot.data;
-                //       if (snapshot.connectionState == ConnectionState.waiting) {
-                //         return const Center(child: CircularProgressIndicator());
-                //       }
-                //       return ListView.builder(
-                //         itemCount: l!.length,
-                //         itemBuilder: (context, index) {
-                //           UserModel userModel = l[index];
-                //           return ListTile(
-                //             title: Text('${userModel.email}'),
-                //           );
-                //         },
-                //       );
-                //     },
-                //   ),
-                // )
               ],
             ),
           ]),
