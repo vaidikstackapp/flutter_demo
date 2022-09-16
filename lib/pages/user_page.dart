@@ -50,7 +50,7 @@ class _UserPageState extends State<UserPage> {
                             : const NetworkImage(
                             'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQQNvWDvQb_rCtRL-p_w329CtzHmfzfWP0FIw&usqp=CAU',
                             scale: 20)),
-                    subtitle: Text("${document['email']}"),
+                   // subtitle: Text("${document['email']}"),
                   );
                 },
               );
@@ -59,7 +59,7 @@ class _UserPageState extends State<UserPage> {
         ),
         ElevatedButton(
             onPressed: () {
-              widget.tabController!.animateTo(widget.tabController!.index - 1);
+              widget.tabController.animateTo(widget.tabController.index - 1);
             },
             child: const Icon(Icons.navigate_before))
       ],
