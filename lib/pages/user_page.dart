@@ -22,7 +22,6 @@ class _UserPageState extends State<UserPage> {
 
   Future<List<UserModel>?> l = Future.value();
   bool status = false;
-
   Future<void> getData() async {
     l = userService.getAllUsers();
     getUser = (await l)!;
