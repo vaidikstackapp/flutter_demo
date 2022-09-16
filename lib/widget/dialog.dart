@@ -23,7 +23,7 @@ dialog(BuildContext context, String id) {
               onPressed: () {
                 Navigator.pop(context);
               },
-              child: Text("No")),
+              child: const Text("No")),
         ],
       );
     },
