@@ -5,8 +5,8 @@ import 'package:flutter_demo/widget/dialog.dart';
 // ignore: must_be_immutable
 class UserPage extends StatefulWidget {
   TabController tabController;
-  UserPage(this. tabController, {super.key});
 
+  UserPage(this.tabController, {super.key});
 
   @override
   State<UserPage> createState() => _UserPageState();
@@ -36,21 +36,19 @@ class _UserPageState extends State<UserPage> {
                           dialog(context, document.id);
                         },
                         icon: const Icon(Icons.delete)),
-                    title: (document['name']
-                        .toString()
-                        .isNotEmpty)
+                    title: (document['name'].toString().isNotEmpty)
                         ? Text("${document['name']}")
                         : const Text("Not Exits"),
                     leading: CircleAvatar(
                         backgroundImage: (document['profileImage']
-                            .toString()
-                            .isNotEmpty)
+                                .toString()
+                                .isNotEmpty)
                             ? NetworkImage('${document['profileImage']}',
-                            scale: 50)
+                                scale: 50)
                             : const NetworkImage(
-                            'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQQNvWDvQb_rCtRL-p_w329CtzHmfzfWP0FIw&usqp=CAU',
-                            scale: 20)),
-                   // subtitle: Text("${document['email']}"),
+                                'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQQNvWDvQb_rCtRL-p_w329CtzHmfzfWP0FIw&usqp=CAU',
+                                scale: 20)),
+                    subtitle: (document['email'].toString().isNotEmpty) ? Text("${document['email']}") : const Text("No Email"),
                   );
                 },
               );
