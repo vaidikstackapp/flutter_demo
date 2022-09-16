@@ -220,8 +220,7 @@ class _FirstPageState extends State<FirstPage>
                           return ListTile(
                             trailing: IconButton(
                                 onPressed: () {
-
-                                  dialog(context,document.id);
+                                  dialog(context, document.id);
                                 },
                                 icon: const Icon(Icons.delete)),
                             title: (document['name'].toString().isNotEmpty)
@@ -275,5 +274,3 @@ class _FirstPageState extends State<FirstPage>
     );
   }
 }
-
-
