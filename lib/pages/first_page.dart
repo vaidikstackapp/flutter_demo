@@ -221,7 +221,6 @@ class _FirstPageState extends State<FirstPage>
                             trailing: IconButton(
                                 onPressed: () {
                                   dialog(context, document.id);
-                                  print("hello");
                                 },
                                 icon: const Icon(Icons.delete)),
                             title: (document['name'].toString().isNotEmpty)
