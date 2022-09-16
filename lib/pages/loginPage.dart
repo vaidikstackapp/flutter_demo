@@ -70,6 +70,7 @@ class _LoginPageState extends State<LoginPage> {
       tPassword.clear();
       if (s != 'email-already-in-use') {
         widget.tabController.animateTo(widget.tabController.index + 1);
+        Variable.preferences!.setBool('login', true);
       }
     }
   }
