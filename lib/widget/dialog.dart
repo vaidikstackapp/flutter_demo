@@ -10,7 +10,7 @@ dialog(BuildContext context, String? id) {
           borderRadius: BorderRadius.circular(10),
         ),
         title: const Text("Delete Dialog"),
-        content: const Text("Do you want to delete this?"),
+        content: const Text("Do you want to delete this user?"),
         actions: [
           ElevatedButton(
               onPressed: () {

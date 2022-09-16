@@ -94,7 +94,10 @@ class _LoginPageState extends State<LoginPage> {
                 decoration: InputDecoration(
                     label: const Text("User Name"),
                     border: OutlineInputBorder(
-                        borderSide: BorderSide(color: Color(0xff1ba294))),
+                      borderSide: BorderSide(
+                        color: Color(0xff1ba294),
+                      ),
+                    ),
                     errorText: (check)
                         ? (tUsername.text.isEmpty)
                             ? "Enter User Name"

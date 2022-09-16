@@ -23,10 +23,13 @@ class _UserPageState extends State<UserPage> {
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return const Center(
-                  child: CircularProgressIndicator(color: Color(0xff1ba294),),
+                  child: CircularProgressIndicator(
+                    color: Color(0xff1ba294),
+                  ),
                 );
               }
-              return ListView.builder(physics: BouncingScrollPhysics(),
+              return ListView.builder(
+                physics: BouncingScrollPhysics(),
                 itemCount: snapshot.data!.docs.length,
                 itemBuilder: (context, index) {
                   DocumentSnapshot document = snapshot.data!.docs[index];
@@ -37,10 +40,13 @@ class _UserPageState extends State<UserPage> {
                         onPressed: () {
                           dialog(context, document.id);
                         },
-                        icon: const Icon(Icons.delete)),
-                    title:
-                      Text("${document['name']}"),
+                        icon: const Icon(
+                          Icons.delete,
+                          color: Color(0xff1ba294),
+                        )),
+                    title: Text("${document['name']}"),
                     leading: CircleAvatar(
+                        backgroundColor: Color(0xff1ba294),
                         backgroundImage: (document['profileImage']
                                 .toString()
                                 .isNotEmpty)
@@ -49,7 +55,9 @@ class _UserPageState extends State<UserPage> {
                             : const NetworkImage(
                                 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQQNvWDvQb_rCtRL-p_w329CtzHmfzfWP0FIw&usqp=CAU',
                                 scale: 20)),
-                    subtitle: (document['email'].toString().isNotEmpty) ? Text("${document['email']}") : const Text("No Email"),
+                    subtitle: (document['email'].toString().isNotEmpty)
+                        ? Text("${document['email']}")
+                        : const Text("No Email"),
                   );
                 },
               );
