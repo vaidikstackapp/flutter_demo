@@ -21,14 +21,16 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   TextEditingController tEmail = TextEditingController();
   TextEditingController tPassword = TextEditingController();
+  TextEditingController tUsername = TextEditingController();
 
   CommonFuntion commonFuntion = CommonFuntion();
   bool check = false;
   UserService userService = UserService();
   String s = "";
 
-  emaliPassAuth(String email, String password) async {
+  emaliPassAuth(String email, String password, String userName,) async {
     if (email.isNotEmpty &&
+        userName.isNotEmpty&&
         password.isNotEmpty &&
         Variable.emailPatten.hasMatch(email) &&
         Variable.passValid.hasMatch(password)) {
@@ -42,7 +44,7 @@ class _LoginPageState extends State<LoginPage> {
           User? user = credential.user;
           UserModel userModel = UserModel(
               email: user!.email,
-              name: user.displayName ?? "",
+              name: userName,
               phoneNumber: user.phoneNumber ?? "",
               profileImage: user.photoURL ?? "",
               uid: user.uid);
@@ -66,11 +68,12 @@ class _LoginPageState extends State<LoginPage> {
           print(e);
         }
       }
-      tEmail.clear();
-      tPassword.clear();
       if (s != 'email-already-in-use') {
+        tEmail.clear();
+        tPassword.clear();
+        tUsername.clear();
         widget.tabController.animateTo(widget.tabController.index + 1);
-        Variable.preferences!.setBool('login', true);
+       // Variable.preferences!.setBool('login', true);
       }
     }
   }
@@ -85,10 +88,21 @@ class _LoginPageState extends State<LoginPage> {
               padding: const EdgeInsets.all(8.0),
               child: TextField(
                 decoration: InputDecoration(
+                    label: const Text("User Name"),
+                    border: const OutlineInputBorder(),
+                    errorText:
+                    (check) ? (tUsername.text.isEmpty) ? "Enter User Name" : null : null),
+                controller: tUsername,
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: TextField(
+                decoration: InputDecoration(
                     label: const Text("E-mail"),
                     border: const OutlineInputBorder(),
                     errorText:
-                        (check) ? commonFuntion.emailValid(tEmail.text) : null),
+                    (check) ? commonFuntion.emailValid(tEmail.text) : null),
                 controller: tEmail,
               ),
             ),
@@ -113,9 +127,10 @@ class _LoginPageState extends State<LoginPage> {
                   FocusManager.instance.primaryFocus?.unfocus();
                   String email = tEmail.text;
                   String password = tPassword.text;
+                  String userName = tUsername.text;
                   check = true;
                   setState(() {});
-                  emaliPassAuth(email, password);
+                  emaliPassAuth(email, password,userName);
                 },
                 child: const Text("Submit")),
             InkWell(

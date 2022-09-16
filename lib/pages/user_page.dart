@@ -30,15 +30,16 @@ class _UserPageState extends State<UserPage> {
                 itemCount: snapshot.data!.docs.length,
                 itemBuilder: (context, index) {
                   DocumentSnapshot document = snapshot.data!.docs[index];
+
+                  print("Document : ${document['name']}");
                   return ListTile(
                     trailing: IconButton(
                         onPressed: () {
                           dialog(context, document.id);
                         },
                         icon: const Icon(Icons.delete)),
-                    title: (document['name'].toString().isNotEmpty)
-                        ? Text("${document['name']}")
-                        : const Text("Not Exits"),
+                    title:
+                      Text("${document['name']}"),
                     leading: CircleAvatar(
                         backgroundImage: (document['profileImage']
                                 .toString()

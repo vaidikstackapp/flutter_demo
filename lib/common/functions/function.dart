@@ -14,9 +14,13 @@ class CommonFuntion{
 
   passwordValid(String password) {
     if (password.isEmpty) {
-      return "Enter Password";
+      return "Enter password";
     } else if (!passValid.hasMatch(password)) {
-      return "Enter Valid Password";
+      return """
+      Minimum 8 characters, 
+      at least one uppercase letter, 
+      one lowercase letter, 
+      one number and one special character""";
     } else {
       return null;
     }
@@ -24,9 +28,9 @@ class CommonFuntion{
 
   emailValid(String email) {
     if (email.isEmpty) {
-      return "Enter Email";
+      return "Enter email";
     } else if (!emailPatten.hasMatch(email)) {
-      return "Enter Valid Email";
+      return "Enter valid email";
     } else {
       return null;
     }
