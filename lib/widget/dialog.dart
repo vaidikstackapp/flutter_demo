@@ -9,13 +9,12 @@ dialog(BuildContext context, String id) {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10),
         ),
-        title: Text("Delete Dialog"),
-        content: Text("Do you want to delete this?"),
+        title: const Text("Delete Dialog"),
+        content: const Text("Do you want to delete this?"),
         actions: [
           ElevatedButton(
               onPressed: () {
                 UserService userService = UserService();
-
                 userService.deleteUser(id);
                 Navigator.pop(context);
               },
