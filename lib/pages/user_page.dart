@@ -26,7 +26,7 @@ class _UserPageState extends State<UserPage> {
                   child: CircularProgressIndicator(),
                 );
               }
-              return ListView.builder(
+              return ListView.builder(physics: BouncingScrollPhysics(),
                 itemCount: snapshot.data!.docs.length,
                 itemBuilder: (context, index) {
                   DocumentSnapshot document = snapshot.data!.docs[index];
