@@ -28,9 +28,13 @@ class _LoginPageState extends State<LoginPage> {
   UserService userService = UserService();
   String s = "";
 
-  emaliPassAuth(String email, String password, String userName,) async {
+  emaliPassAuth(
+    String email,
+    String password,
+    String userName,
+  ) async {
     if (email.isNotEmpty &&
-        userName.isNotEmpty&&
+        userName.isNotEmpty &&
         password.isNotEmpty &&
         Variable.emailPatten.hasMatch(email) &&
         Variable.passValid.hasMatch(password)) {
@@ -73,7 +77,7 @@ class _LoginPageState extends State<LoginPage> {
         tPassword.clear();
         tUsername.clear();
         widget.tabController.animateTo(widget.tabController.index + 1);
-       // Variable.preferences!.setBool('login', true);
+        // Variable.preferences!.setBool('login', true);
       }
     }
   }
@@ -89,9 +93,13 @@ class _LoginPageState extends State<LoginPage> {
               child: TextField(
                 decoration: InputDecoration(
                     label: const Text("User Name"),
-                    border: const OutlineInputBorder(),
-                    errorText:
-                    (check) ? (tUsername.text.isEmpty) ? "Enter User Name" : null : null),
+                    border: OutlineInputBorder(
+                        borderSide: BorderSide(color: Color(0xff1ba294))),
+                    errorText: (check)
+                        ? (tUsername.text.isEmpty)
+                            ? "Enter User Name"
+                            : null
+                        : null),
                 controller: tUsername,
               ),
             ),
@@ -102,7 +110,7 @@ class _LoginPageState extends State<LoginPage> {
                     label: const Text("E-mail"),
                     border: const OutlineInputBorder(),
                     errorText:
-                    (check) ? commonFuntion.emailValid(tEmail.text) : null),
+                        (check) ? commonFuntion.emailValid(tEmail.text) : null),
                 controller: tEmail,
               ),
             ),
@@ -130,7 +138,7 @@ class _LoginPageState extends State<LoginPage> {
                   String userName = tUsername.text;
                   check = true;
                   setState(() {});
-                  emaliPassAuth(email, password,userName);
+                  emaliPassAuth(email, password, userName);
                 },
                 child: const Text("Submit")),
             InkWell(
@@ -141,19 +149,26 @@ class _LoginPageState extends State<LoginPage> {
                 height: 40,
                 width: 160,
                 decoration: BoxDecoration(
-                  color: const Color(0xff1ba294),
-                  borderRadius: BorderRadius.circular(5),
-                boxShadow: const [
-                  BoxShadow(color: Colors.black26,offset: Offset(0, 5),blurRadius: 5),
-
-                ]
-                ),
+                    color: const Color(0xff1ba294),
+                    borderRadius: BorderRadius.circular(5),
+                    boxShadow: const [
+                      BoxShadow(
+                          color: Colors.black26,
+                          offset: Offset(0, 5),
+                          blurRadius: 5),
+                    ]),
                 padding: const EdgeInsets.symmetric(horizontal: 5),
                 alignment: Alignment.center,
                 child: Row(
                   children: [
-                    Image.asset("images/google (1).png",height: 20,width: 20,fit: BoxFit.cover,),
-                    const Text(" - Sign in with google",style: TextStyle(color: Colors.white)),
+                    Image.asset(
+                      "images/google (1).png",
+                      height: 20,
+                      width: 20,
+                      fit: BoxFit.cover,
+                    ),
+                    const Text(" - Sign in with google",
+                        style: TextStyle(color: Colors.white)),
                   ],
                 ),
               ),
