@@ -1,0 +1,44 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_demo/model/user_model.dart';
+
+class UserService {
+  final CollectionReference userCollection =
+      FirebaseFirestore.instance.collection('users');
+
+  Future<void> createUser(UserModel userModel) async {
+    try {
+      await userCollection.doc(userModel.uid).set(userModel.toJson());
+    } on FirebaseException catch (e) {
+      print("Catch Exception in createUser : ${e.message}");
+    }
+  }
+
+  Future<List<UserModel>?> getAllUsers() async {
+
+    List<UserModel> allData = [];
+
+    try {
+      QuerySnapshot snapshot = await userCollection.get();
+
+      for(var element in snapshot.docs)
+        {
+          Map<String,dynamic> map = element.data() as Map<String,dynamic>;
+          UserModel categoryModel = UserModel.fromJson(map);
+          allData.add(categoryModel);
+        }
+      return allData;
+    }on FirebaseException catch(e)
+    {
+      ("Catch Exception in getAllUsers : ${e.message}");
+    }
+    return null;
+  }
+  Future<void> deleteUser(String id) async {
+
+    try{
+     await userCollection.doc(id).delete();
+    }on FirebaseException catch(e){
+      print("Catch Exception in deleteUser : ${e.message}");
+    }
+  }
+}
