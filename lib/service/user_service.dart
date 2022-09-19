@@ -21,4 +21,12 @@ class UserService {
       print("Catch Exception in deleteUser : ${e.message}");
     }
   }
+
+  void createUser1(UserModel userModel) {
+    try {
+      userCollection.doc(userModel.uid).set(userModel.toJson());
+    } on FirebaseException catch (e) {
+      print("Catch Exception in FirebaseException :$e");
+    }
+  }
 }

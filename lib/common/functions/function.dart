@@ -8,6 +8,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 
 import '../../model/user_model.dart';
 import '../../service/user_service.dart';
+import '../../service/user_service1.dart';
 import '../variable/variable.dart';
 
 class CommonFuntion {
@@ -18,6 +19,7 @@ class CommonFuntion {
   bool check = false;
 
   UserService userService = UserService();
+  UserService1 userService1 = UserService1();
 
   Future<UserCredential> signInWithGoogle(TabController tabController) async {
     // Trigger the authentication flow
@@ -67,7 +69,7 @@ class CommonFuntion {
             phoneNumber: user.phoneNumber ?? "",
             profileImage: user.photoURL ?? "",
             uid: user.uid);
-        await userService.createUser(userModel);
+        await userService1.setUser(userModel);
       }
     } on FirebaseAuthException catch (e) {
       s = e.code;
