@@ -42,17 +42,23 @@ class _FirstPageState extends State<FirstPage>
       appBar: AppBar(
         title: const Text("Firebase_demo"),
         centerTitle: true,
-        bottom: TabBar(
-            indicatorColor: Colors.white,
-            controller: _tabController,
-            tabs: const [
-              Tab(
-                icon: Icon(Icons.login),
-              ),
-              Tab(
-                icon: Icon(Icons.verified_user),
-              ),
-            ]),
+        bottom: PreferredSize(
+          preferredSize: const Size.fromHeight(50),
+          child: IgnorePointer(
+            ignoring: true,
+            child: TabBar(
+                indicatorColor: Colors.white,
+                controller: _tabController,
+                tabs: const [
+                  Tab(
+                    icon: Icon(Icons.login),
+                  ),
+                  Tab(
+                    icon: Icon(Icons.verified_user),
+                  ),
+                ]),
+          ),
+        ),
       ),
       body: TabBarView(
           physics: const NeverScrollableScrollPhysics(),

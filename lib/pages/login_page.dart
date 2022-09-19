@@ -44,14 +44,21 @@ class _LoginPageState extends State<LoginPage> {
                   return null;
                 },
                 controller: tUsername,
-                decoration: const InputDecoration(
-                  label: Text("User Name"),
-                  border: OutlineInputBorder(
-                    borderSide: BorderSide(
-                      color: Color(0xff1ba294),
+                cursorColor: Color(0xff1ba294),
+                decoration: InputDecoration(
+                    label: Text(
+                      "User Name",
+                      style: TextStyle(color: Color(0xff1ba294)),
                     ),
-                  ),
-                ),
+                    border: const OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: Color(0xff1ba294),
+                      ),
+                    ),
+                    enabledBorder: outLineInputBorder(),
+                    disabledBorder: outLineInputBorder(),
+                    focusedBorder: outLineInputBorder(),
+                    errorBorder: outLineInputBorder(color: Colors.red)),
               ),
             ),
             Padding(
@@ -66,13 +73,21 @@ class _LoginPageState extends State<LoginPage> {
                   return null;
                 },
                 controller: tEmail,
-                decoration: const InputDecoration(
-                  label: Text("Email"),
-                  border: OutlineInputBorder(
+                cursorColor: Color(0xff1ba294),
+                decoration: InputDecoration(
+                  label: Text(
+                    "Email",
+                    style: TextStyle(color: Color(0xff1ba294)),
+                  ),
+                  border: const OutlineInputBorder(
                     borderSide: BorderSide(
                       color: Color(0xff1ba294),
                     ),
                   ),
+                  enabledBorder: outLineInputBorder(),
+                  disabledBorder: outLineInputBorder(),
+                  focusedBorder: outLineInputBorder(),
+                  errorBorder: outLineInputBorder(color: Colors.red),
                 ),
               ),
             ),
@@ -108,7 +123,12 @@ class _LoginPageState extends State<LoginPage> {
                       color: Color(0xff1ba294),
                     ),
                   ),
+                  enabledBorder: outLineInputBorder(),
+                  disabledBorder: outLineInputBorder(),
+                  focusedBorder: outLineInputBorder(),
+                  errorBorder: outLineInputBorder(color: Colors.red),
                 ),
+                cursorColor: const Color(0xff1ba294),
               ),
             ),
             ElevatedButton(
@@ -157,4 +177,11 @@ class _LoginPageState extends State<LoginPage> {
       ),
     );
   }
+
+  OutlineInputBorder outLineInputBorder({Color? color}) => OutlineInputBorder(
+        borderSide: BorderSide(
+          width: 2,
+          color: color ?? const Color(0xff1ba294),
+        ),
+      );
 }
