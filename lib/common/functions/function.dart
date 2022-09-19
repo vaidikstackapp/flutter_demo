@@ -11,10 +11,10 @@ import '../variable/variable.dart';
 class CommonFuntion {
   UserService userService = UserService();
   UserService1 userService1 = UserService1();
-
+  GoogleSignIn googleSignIn = GoogleSignIn();
   Future<UserCredential> signInWithGoogle(TabController tabController) async {
     // Trigger the authentication flow
-    final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+    final GoogleSignInAccount? googleUser = await googleSignIn.signIn();
 
     // Obtain the auth details from the request
     final GoogleSignInAuthentication googleAuth =
@@ -32,7 +32,7 @@ class CommonFuntion {
           profileImage: user.photoUrl ?? "",
           name: user.displayName,
           email: user.email,
-          phoneNumber: "");
+          phoneNumber: '');
       userService.createUser(userModel);
     }
     tabController.animateTo(tabController.index + 1);
@@ -98,5 +98,6 @@ class CommonFuntion {
 
   googleSignOut() async {
     await FirebaseAuth.instance.signOut();
+    await googleSignIn.signOut();
   }
 }
