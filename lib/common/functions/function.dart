@@ -1,23 +1,14 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/material/tab_controller.dart';
-import 'package:flutter/src/widgets/editable_text.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-
 import '../../model/user_model.dart';
 import '../../service/user_service.dart';
 import '../../service/user_service1.dart';
 import '../variable/variable.dart';
 
 class CommonFuntion {
-  RegExp emailPatten = RegExp(
-      r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
-  RegExp passValid = RegExp(
-      r"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$");
-  bool check = false;
-
   UserService userService = UserService();
   UserService1 userService1 = UserService1();
 
@@ -56,7 +47,9 @@ class CommonFuntion {
     String email = tEmail.text;
     String password = tPassword.text;
     String userName = tUsername.text;
-    print("email : $email");
+    if (kDebugMode) {
+      print("email : $email");
+    }
     try {
       final credential =
           await FirebaseAuth.instance.createUserWithEmailAndPassword(
