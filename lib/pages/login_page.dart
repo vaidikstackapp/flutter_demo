@@ -46,7 +46,7 @@ class _LoginPageState extends State<LoginPage> {
                   return null;
                 },
                 controller: tUsername,
-                cursorColor: Color(0xff1ba294),
+                cursorColor: const Color(0xff1ba294),
                 decoration: InputDecoration(
                     label: const Text(
                       "User Name",
@@ -76,7 +76,7 @@ class _LoginPageState extends State<LoginPage> {
                   return null;
                 },
                 controller: tEmail,
-                cursorColor: Color(0xff1ba294),
+                cursorColor: const Color(0xff1ba294),
                 decoration: InputDecoration(
                   label: const Text(
                     "Email",
