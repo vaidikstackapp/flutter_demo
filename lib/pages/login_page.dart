@@ -32,11 +32,13 @@ class _LoginPageState extends State<LoginPage> {
     return Form(
       key: _formKey,
       child: SingleChildScrollView(
+        physics: const BouncingScrollPhysics(),
         child: Column(
           children: [
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: TextFormField(
+                textInputAction: TextInputAction.next,
                 validator: (value) {
                   if (value!.isEmpty) {
                     return "enter username";
@@ -46,7 +48,7 @@ class _LoginPageState extends State<LoginPage> {
                 controller: tUsername,
                 cursorColor: Color(0xff1ba294),
                 decoration: InputDecoration(
-                    label: Text(
+                    label: const Text(
                       "User Name",
                       style: TextStyle(color: Color(0xff1ba294)),
                     ),
@@ -64,6 +66,7 @@ class _LoginPageState extends State<LoginPage> {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: TextFormField(
+                textInputAction: TextInputAction.next,
                 validator: (value) {
                   if (value!.isEmpty) {
                     return "Enter email";
@@ -75,7 +78,7 @@ class _LoginPageState extends State<LoginPage> {
                 controller: tEmail,
                 cursorColor: Color(0xff1ba294),
                 decoration: InputDecoration(
-                  label: Text(
+                  label: const Text(
                     "Email",
                     style: TextStyle(color: Color(0xff1ba294)),
                   ),
@@ -94,6 +97,7 @@ class _LoginPageState extends State<LoginPage> {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: TextFormField(
+                textInputAction: TextInputAction.next,
                 obscureText: visible,
                 validator: (value) {
                   if (value!.isEmpty) {
