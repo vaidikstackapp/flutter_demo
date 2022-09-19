@@ -69,7 +69,7 @@ class CommonFuntion {
             phoneNumber: user.phoneNumber ?? "",
             profileImage: user.photoURL ?? "",
             uid: user.uid);
-        await userService1.setUser(userModel);
+        await userService.createUser(userModel);
       }
     } on FirebaseAuthException catch (e) {
       s = e.code;
