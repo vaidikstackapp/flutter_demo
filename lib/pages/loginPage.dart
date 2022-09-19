@@ -83,6 +83,7 @@ class _LoginPageState extends State<LoginPage> {
     }
   }
 
+  bool visible = true;
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -94,7 +95,7 @@ class _LoginPageState extends State<LoginPage> {
               child: TextField(
                 decoration: InputDecoration(
                     label: const Text("User Name"),
-                    border: OutlineInputBorder(
+                    border: const OutlineInputBorder(
                       borderSide: BorderSide(
                         color: Color(0xff1ba294),
                       ),
@@ -121,9 +122,18 @@ class _LoginPageState extends State<LoginPage> {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: TextField(
+                obscureText: visible,
                 decoration: InputDecoration(
                     label: const Text("password"),
                     border: const OutlineInputBorder(),
+                    suffixIcon: IconButton(
+                        onPressed: () {
+                          visible = !visible;
+                          setState(() {});
+                        },
+                        icon: (visible)
+                            ? const Icon(Icons.visibility)
+                            : Icon(Icons.visibility_off)),
                     errorText: (check)
                         ? commonFuntion.passwordValid(tPassword.text)
                         : null),

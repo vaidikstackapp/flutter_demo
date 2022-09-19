@@ -42,7 +42,7 @@ dependencies:
   google_sign_in: ^5.4.1
   shared_preferences: ^2.0.15
   cloud_firestore: ^3.4.7
-
+  provider: ^6.0.3
 
 dev_dependencies:
   flutter_test:
