@@ -73,7 +73,9 @@ class CommonFuntion {
       }
     } on FirebaseAuthException catch (e) {
       s = e.code;
-      print("e code = $s");
+      if (kDebugMode) {
+        print("e code = $s");
+      }
       if (e.code == 'weak-password') {
       } else if (e.code == 'email-already-in-use') {
         Fluttertoast.showToast(
