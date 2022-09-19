@@ -80,13 +80,12 @@ class _UserPageState extends State<UserPage> {
           CommonFuntion commonFuntion = CommonFuntion();
           commonFuntion.googleSignOut();
           ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-              duration: Duration(seconds: 2),
+              duration: Duration(seconds: 3),
               content: Text("Sign out successfully")));
           widget.tabController.animateTo(widget.tabController.index - 1);
         },
         child: const Icon(
           Icons.navigate_before,
-          //color: Color(0xff1ba294),
         ),
       ),
     );
