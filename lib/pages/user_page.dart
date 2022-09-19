@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_demo/model/user_model.dart';
 import 'package:flutter_demo/widget/dialog.dart';
 
 // ignore: must_be_immutable
@@ -34,7 +35,10 @@ class _UserPageState extends State<UserPage> {
                 itemBuilder: (context, index) {
                   DocumentSnapshot document = snapshot.data!.docs[index];
 
-                  print("Document : ${document['name']}");
+                  UserModel userModel = UserModel.fromJson(
+                      document.data() as Map<String, dynamic>);
+                  print("document : $document");
+                  //print("Document : ${document['name']}");
                   return ListTile(
                     trailing: IconButton(
                         onPressed: () {
@@ -44,19 +48,19 @@ class _UserPageState extends State<UserPage> {
                           Icons.delete,
                           color: Color(0xff1ba294),
                         )),
-                    title: Text("${document['name']}"),
+                    title: Text("${userModel.name}"),
                     leading: CircleAvatar(
                         backgroundColor: Color(0xff1ba294),
-                        backgroundImage: (document['profileImage']
+                        backgroundImage: (userModel.profileImage
                                 .toString()
                                 .isNotEmpty)
-                            ? NetworkImage('${document['profileImage']}',
+                            ? NetworkImage('${userModel.profileImage}',
                                 scale: 50)
                             : const NetworkImage(
                                 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQQNvWDvQb_rCtRL-p_w329CtzHmfzfWP0FIw&usqp=CAU',
                                 scale: 20)),
-                    subtitle: (document['email'].toString().isNotEmpty)
-                        ? Text("${document['email']}")
+                    subtitle: (userModel.email.toString().isNotEmpty)
+                        ? Text("${userModel.email}")
                         : const Text("No Email"),
                   );
                 },

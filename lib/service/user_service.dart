@@ -13,31 +13,10 @@ class UserService {
     }
   }
 
-  Future<List<UserModel>?> getAllUsers() async {
-
-    List<UserModel> allData = [];
-
-    try {
-      QuerySnapshot snapshot = await userCollection.get();
-
-      for(var element in snapshot.docs)
-        {
-          Map<String,dynamic> map = element.data() as Map<String,dynamic>;
-          UserModel categoryModel = UserModel.fromJson(map);
-          allData.add(categoryModel);
-        }
-      return allData;
-    }on FirebaseException catch(e)
-    {
-      ("Catch Exception in getAllUsers : ${e.message}");
-    }
-    return null;
-  }
   Future<void> deleteUser(String id) async {
-
-    try{
-     await userCollection.doc(id).delete();
-    }on FirebaseException catch(e){
+    try {
+      await userCollection.doc(id).delete();
+    } on FirebaseException catch (e) {
       print("Catch Exception in deleteUser : ${e.message}");
     }
   }

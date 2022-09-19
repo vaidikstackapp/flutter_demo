@@ -36,6 +36,7 @@ class _LoginPageState extends State<LoginPage> {
     if (email.isNotEmpty &&
         userName.isNotEmpty &&
         password.isNotEmpty &&
+        password.length > 8 &&
         Variable.emailPatten.hasMatch(email) &&
         Variable.passValid.hasMatch(password)) {
       try {
@@ -120,7 +121,6 @@ class _LoginPageState extends State<LoginPage> {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: TextField(
-                maxLength: 8,
                 decoration: InputDecoration(
                     label: const Text("password"),
                     border: const OutlineInputBorder(),
