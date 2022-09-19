@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_demo/model/user_model.dart';
 import 'package:flutter_demo/widget/dialog.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 // ignore: must_be_immutable
 class UserPage extends StatefulWidget {
@@ -24,13 +25,13 @@ class _UserPageState extends State<UserPage> {
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return const Center(
-                  child: CircularProgressIndicator(
+                  child: SpinKitCircle(
                     color: Color(0xff1ba294),
                   ),
                 );
               }
               return ListView.builder(
-                physics: BouncingScrollPhysics(),
+                physics: const BouncingScrollPhysics(),
                 itemCount: snapshot.data!.docs.length,
                 itemBuilder: (context, index) {
                   DocumentSnapshot document = snapshot.data!.docs[index];
@@ -71,7 +72,7 @@ class _UserPageState extends State<UserPage> {
             onPressed: () {
               widget.tabController.animateTo(widget.tabController.index - 1);
             },
-            child: const Icon(Icons.navigate_before))
+            child: const Icon(Icons.navigate_before)),
       ],
     );
   }
