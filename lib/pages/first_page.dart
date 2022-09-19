@@ -31,7 +31,7 @@ class _FirstPageState extends State<FirstPage>
 
   checkLogin() async {
     Variable.preferences = await SharedPreferences.getInstance();
-    status = Variable.preferences!.getBool('login') ?? false;
+    //status = Variable.preferences!.getBool('login') ?? false;
     // print("Status : $status");
   }
 
@@ -57,8 +57,8 @@ class _FirstPageState extends State<FirstPage>
           physics: const NeverScrollableScrollPhysics(),
           controller: _tabController,
           children: [
-            UserPage(_tabController),
             LoginPage(_tabController),
+            UserPage(_tabController),
           ]),
     );
   }

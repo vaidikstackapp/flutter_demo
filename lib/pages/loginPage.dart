@@ -28,130 +28,101 @@ class _LoginPageState extends State<LoginPage> {
   UserService userService = UserService();
   String s = "";
 
-  emaliPassAuth(
-    String email,
-    String password,
-    String userName,
-  ) async {
-    if (email.isNotEmpty &&
-        userName.isNotEmpty &&
-        password.isNotEmpty &&
-        password.length > 8 &&
-        Variable.emailPatten.hasMatch(email) &&
-        Variable.passValid.hasMatch(password)) {
-      try {
-        final credential =
-            await FirebaseAuth.instance.createUserWithEmailAndPassword(
-          email: email,
-          password: password,
-        );
-        if (credential.user != null) {
-          User? user = credential.user;
-          UserModel userModel = UserModel(
-              email: user!.email,
-              name: userName,
-              phoneNumber: user.phoneNumber ?? "",
-              profileImage: user.photoURL ?? "",
-              uid: user.uid);
-          await userService.createUser(userModel);
-        }
-      } on FirebaseAuthException catch (e) {
-        s = e.code;
-        if (e.code == 'weak-password') {
-        } else if (e.code == 'email-already-in-use') {
-          Fluttertoast.showToast(
-              msg: "The account already exists for that email",
-              toastLength: Toast.LENGTH_SHORT,
-              gravity: ToastGravity.CENTER,
-              timeInSecForIosWeb: 1,
-              backgroundColor: Colors.red,
-              textColor: Colors.white,
-              fontSize: 16.0);
-        }
-      } catch (e) {
-        if (kDebugMode) {
-          print(e);
-        }
-      }
-      if (s != 'email-already-in-use') {
-        tEmail.clear();
-        tPassword.clear();
-        tUsername.clear();
-        Variable.preferences!.setBool('login', true);
-        widget.tabController.animateTo(widget.tabController.index + 1);
-      }
-    }
-  }
+  final _formKey = GlobalKey<FormState>();
 
   bool visible = true;
+
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Center(
+    return Form(
+      key: _formKey,
+      child: SingleChildScrollView(
         child: Column(
           children: [
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: TextField(
-                decoration: InputDecoration(
-                    label: const Text("User Name"),
-                    border: const OutlineInputBorder(
-                      borderSide: BorderSide(
-                        color: Color(0xff1ba294),
-                      ),
-                    ),
-                    errorText: (check)
-                        ? (tUsername.text.isEmpty)
-                            ? "Enter User Name"
-                            : null
-                        : null),
+              child: TextFormField(
+                validator: (value) {
+                  if (value!.isEmpty) {
+                    return "enter username";
+                  }
+                  return null;
+                },
                 controller: tUsername,
+                decoration: const InputDecoration(
+                  label: Text("User Name"),
+                  border: OutlineInputBorder(
+                    borderSide: BorderSide(
+                      color: Color(0xff1ba294),
+                    ),
+                  ),
+                ),
               ),
             ),
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: TextField(
-                decoration: InputDecoration(
-                    label: const Text("E-mail"),
-                    border: const OutlineInputBorder(),
-                    errorText:
-                        (check) ? commonFuntion.emailValid(tEmail.text) : null),
+              child: TextFormField(
+                validator: (value) {
+                  if (value!.isEmpty) {
+                    return "Enter email";
+                  } else if (!Variable.emailPatten.hasMatch(value)) {
+                    return "Enter valid email";
+                  }
+                  return null;
+                },
                 controller: tEmail,
+                decoration: const InputDecoration(
+                  label: Text("Email"),
+                  border: OutlineInputBorder(
+                    borderSide: BorderSide(
+                      color: Color(0xff1ba294),
+                    ),
+                  ),
+                ),
               ),
             ),
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: TextField(
+              child: TextFormField(
                 obscureText: visible,
-                decoration: InputDecoration(
-                    label: const Text("password"),
-                    border: const OutlineInputBorder(),
-                    suffixIcon: IconButton(
-                        onPressed: () {
-                          visible = !visible;
-                          setState(() {});
-                        },
-                        icon: (visible)
-                            ? const Icon(Icons.visibility)
-                            : const Icon(Icons.visibility_off)),
-                    errorText: (check)
-                        ? commonFuntion.passwordValid(tPassword.text)
-                        : null),
+                validator: (value) {
+                  if (value!.isEmpty) {
+                    return "enter password";
+                  } else if (!Variable.passValid.hasMatch(value)) {
+                    return """
+                              Minimum 8 characters, 
+                              at least one uppercase letter, 
+                              one lowercase letter, 
+                              one number and one special character""";
+                  }
+                  return null;
+                },
                 controller: tPassword,
+                decoration: InputDecoration(
+                  suffixIcon: IconButton(
+                      onPressed: () {
+                        visible = !visible;
+                        setState(() {});
+                      },
+                      icon: (visible)
+                          ? const Icon(Icons.visibility)
+                          : const Icon(Icons.visibility_off)),
+                  label: const Text("Password"),
+                  border: const OutlineInputBorder(
+                    borderSide: BorderSide(
+                      color: Color(0xff1ba294),
+                    ),
+                  ),
+                ),
               ),
-            ),
-            const SizedBox(
-              height: 20,
             ),
             ElevatedButton(
                 onPressed: () async {
                   FocusManager.instance.primaryFocus?.unfocus();
-                  String email = tEmail.text;
-                  String password = tPassword.text;
-                  String userName = tUsername.text;
-                  check = true;
-                  setState(() {});
-                  emaliPassAuth(email, password, userName);
+                  if (_formKey.currentState!.validate()) {
+                    CommonFuntion().authentication(
+                        tEmail, tUsername, tPassword, widget.tabController);
+                  }
                 },
                 child: const Text("Submit")),
             InkWell(
