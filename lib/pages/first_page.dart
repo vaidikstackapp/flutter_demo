@@ -15,33 +15,33 @@ class _FirstPageState extends State<FirstPage>
     with SingleTickerProviderStateMixin {
   late final _tabController = TabController(length: 2, vsync: this);
 
-  bool status = false;
-
   @override
   void initState() {
     super.initState();
     checkLogin();
   }
 
-  checkLogin()
-  async {
+  checkLogin() async {
     Variable.preferences = await SharedPreferences.getInstance();
-    status = Variable.preferences!.getBool('login') ?? false;
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Firebase_demo"),
         centerTitle: true,
-        bottom: TabBar(indicatorColor: Colors.white,controller: _tabController, tabs: const [
-          Tab(
-            icon: Icon(Icons.login),
-          ),
-          Tab(
-            icon: Icon(Icons.verified_user),
-          ),
-        ]),
+        bottom: TabBar(
+            indicatorColor: Colors.white,
+            controller: _tabController,
+            tabs: const [
+              Tab(
+                icon: Icon(Icons.login),
+              ),
+              Tab(
+                icon: Icon(Icons.verified_user),
+              ),
+            ]),
       ),
       body: TabBarView(
           physics: const NeverScrollableScrollPhysics(),
@@ -49,7 +49,6 @@ class _FirstPageState extends State<FirstPage>
           children: [
             LoginPage(_tabController),
             UserPage(_tabController),
-
           ]),
     );
   }

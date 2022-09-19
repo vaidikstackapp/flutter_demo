@@ -34,7 +34,6 @@ class _UserPageState extends State<UserPage> {
                 itemCount: snapshot.data!.docs.length,
                 itemBuilder: (context, index) {
                   DocumentSnapshot document = snapshot.data!.docs[index];
-
                   UserModel userModel = UserModel.fromJson(
                       document.data() as Map<String, dynamic>);
                   print("document : $document");

@@ -78,7 +78,6 @@ class _LoginPageState extends State<LoginPage> {
         tPassword.clear();
         tUsername.clear();
         widget.tabController.animateTo(widget.tabController.index + 1);
-        // Variable.preferences!.setBool('login', true);
       }
     }
   }
