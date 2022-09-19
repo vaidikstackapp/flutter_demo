@@ -32,40 +32,43 @@ class _UserPageState extends State<UserPage> {
                     ),
                   );
                 }
-                return ListView.builder(
-                  physics: const BouncingScrollPhysics(),
-                  itemCount: snapshot.data!.docs.length,
-                  itemBuilder: (context, index) {
-                    DocumentSnapshot document = snapshot.data!.docs[index];
-                    UserModel userModel = UserModel.fromJson(
-                        document.data() as Map<String, dynamic>);
-                    print("document : $document");
-                    //print("Document : ${document['name']}");
-                    return ListTile(
-                      trailing: IconButton(
-                          onPressed: () {
-                            dialog(context, document.id);
-                          },
-                          icon: const Icon(
-                            Icons.delete,
-                            color: Color(0xff1ba294),
-                          )),
-                      title: Text("${userModel.name}"),
-                      leading: CircleAvatar(
-                          backgroundColor: Color(0xff1ba294),
-                          backgroundImage: (userModel.profileImage
-                                  .toString()
-                                  .isNotEmpty)
-                              ? NetworkImage('${userModel.profileImage}',
-                                  scale: 50)
-                              : const NetworkImage(
-                                  'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQQNvWDvQb_rCtRL-p_w329CtzHmfzfWP0FIw&usqp=CAU',
-                                  scale: 20)),
-                      subtitle: (userModel.email.toString().isNotEmpty)
-                          ? Text("${userModel.email}")
-                          : const Text("No Email"),
-                    );
-                  },
+                return RawScrollbar(
+                  thumbColor: const Color(0xff1ba294),
+                  child: ListView.builder(
+                    physics: const BouncingScrollPhysics(),
+                    itemCount: snapshot.data!.docs.length,
+                    itemBuilder: (context, index) {
+                      DocumentSnapshot document = snapshot.data!.docs[index];
+                      UserModel userModel = UserModel.fromJson(
+                          document.data() as Map<String, dynamic>);
+                      // print("document : $document");
+                      //print("Document : ${document['name']}");
+                      return ListTile(
+                        trailing: IconButton(
+                            onPressed: () {
+                              dialog(context, document.id);
+                            },
+                            icon: const Icon(
+                              Icons.delete,
+                              color: Color(0xff1ba294),
+                            )),
+                        title: Text("${userModel.name}"),
+                        leading: CircleAvatar(
+                            backgroundColor: const Color(0xff1ba294),
+                            backgroundImage: (userModel.profileImage
+                                    .toString()
+                                    .isNotEmpty)
+                                ? NetworkImage('${userModel.profileImage}',
+                                    scale: 50)
+                                : const NetworkImage(
+                                    'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQQNvWDvQb_rCtRL-p_w329CtzHmfzfWP0FIw&usqp=CAU',
+                                    scale: 20)),
+                        subtitle: (userModel.email.toString().isNotEmpty)
+                            ? Text("${userModel.email}")
+                            : const Text("No Email"),
+                      );
+                    },
+                  ),
                 );
               },
             ),
