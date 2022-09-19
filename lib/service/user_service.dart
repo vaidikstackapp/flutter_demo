@@ -15,8 +15,6 @@ class UserService {
   }
 
   Future<void> deleteUser(String id) async {
-    FirebaseAuth.instance.signOut();
-
     try {
       await userCollection.doc(id).delete();
     } on FirebaseException catch (e) {
