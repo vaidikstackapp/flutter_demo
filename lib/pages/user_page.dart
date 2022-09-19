@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_demo/common/functions/function.dart';
 import 'package:flutter_demo/model/user_model.dart';
 import 'package:flutter_demo/widget/dialog.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -41,8 +42,6 @@ class _UserPageState extends State<UserPage> {
                       DocumentSnapshot document = snapshot.data!.docs[index];
                       UserModel userModel = UserModel.fromJson(
                           document.data() as Map<String, dynamic>);
-                      // print("document : $document");
-                      //print("Document : ${document['name']}");
                       return ListTile(
                         trailing: IconButton(
                             onPressed: () {
@@ -77,7 +76,12 @@ class _UserPageState extends State<UserPage> {
       ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: const Color(0xff1ba294),
-        onPressed: () {
+        onPressed: () async {
+          CommonFuntion commonFuntion = CommonFuntion();
+          commonFuntion.googleSignOut();
+          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+              duration: Duration(seconds: 2),
+              content: Text("Sign out successfully")));
           widget.tabController.animateTo(widget.tabController.index - 1);
         },
         child: const Icon(

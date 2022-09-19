@@ -41,8 +41,11 @@ class CommonFuntion {
     return userCredential;
   }
 
-  authentication(TextEditingController tEmail, TextEditingController tUsername,
-      TextEditingController tPassword, TabController tabController) async {
+  void authentication(
+      TextEditingController tEmail,
+      TextEditingController tUsername,
+      TextEditingController tPassword,
+      TabController tabController) async {
     String s = '';
     String email = tEmail.text;
     String password = tPassword.text;
@@ -91,5 +94,9 @@ class CommonFuntion {
       Variable.preferences!.setBool('login', true);
       tabController.animateTo(tabController.index + 1);
     }
+  }
+
+  googleSignOut() async {
+    await FirebaseAuth.instance.signOut();
   }
 }

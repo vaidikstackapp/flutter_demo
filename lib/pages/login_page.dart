@@ -104,10 +104,10 @@ class _LoginPageState extends State<LoginPage> {
                     return "enter password";
                   } else if (!Variable.passPatten.hasMatch(value)) {
                     return """
-                              Minimum 8 characters, 
-                              at least one uppercase letter, 
-                              one lowercase letter, 
-                              one number and one special character""";
+Minimum 8 characters, 
+at least one uppercase letter, 
+one lowercase letter, 
+one number and one special character""";
                   }
                   return null;
                 },
