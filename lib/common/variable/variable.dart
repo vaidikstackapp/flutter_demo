@@ -7,4 +7,5 @@ class Variable {
       r"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$");
 
   static SharedPreferences? preferences;
+  static bool status = false;
 }

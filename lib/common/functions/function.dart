@@ -34,6 +34,7 @@ class CommonFuntion {
           email: user.email,
           phoneNumber: '');
       userService.createUser(userModel);
+      Variable.status = true;
     }
     tabController.animateTo(tabController.index + 1);
     UserCredential userCredential =
