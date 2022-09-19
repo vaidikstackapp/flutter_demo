@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_demo/model/user_model.dart';
 
 class UserService {
@@ -10,7 +11,9 @@ class UserService {
     try {
       await userCollection.doc(userModel.uid).set(userModel.toJson());
     } on FirebaseException catch (e) {
-      print("Catch Exception in createUser : ${e.message}");
+      if (kDebugMode) {
+        print("Catch Exception in createUser : ${e.message}");
+      }
     }
   }
 
@@ -18,15 +21,9 @@ class UserService {
     try {
       await userCollection.doc(id).delete();
     } on FirebaseException catch (e) {
-      print("Catch Exception in deleteUser : ${e.message}");
-    }
-  }
-
-  void createUser1(UserModel userModel) {
-    try {
-      userCollection.doc(userModel.uid).set(userModel.toJson());
-    } on FirebaseException catch (e) {
-      print("Catch Exception in FirebaseException :$e");
+      if (kDebugMode) {
+        print("Catch Exception in deleteUser : ${e.message}");
+      }
     }
   }
 }

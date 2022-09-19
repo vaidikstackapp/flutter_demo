@@ -35,13 +35,15 @@ class CommonFuntion {
       idToken: googleAuth.idToken,
     );
     GoogleSignInAccount user = googleUser;
-    UserModel userModel = UserModel(
-        uid: user.id,
-        profileImage: user.photoUrl ?? "",
-        name: user.displayName,
-        email: user.email,
-        phoneNumber: "");
-    userService.createUser(userModel);
+    if (user.toString().isNotEmpty) {
+      UserModel userModel = UserModel(
+          uid: user.id,
+          profileImage: user.photoUrl ?? "",
+          name: user.displayName,
+          email: user.email,
+          phoneNumber: "");
+      userService.createUser(userModel);
+    }
     tabController.animateTo(tabController.index + 1);
     UserCredential userCredential =
         await FirebaseAuth.instance.signInWithCredential(credential);
