@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_demo/common/variable/variable.dart';
-import 'package:flutter_demo/pages/loginPage.dart';
+import 'package:flutter_demo/pages/login_page.dart';
 import 'package:flutter_demo/pages/user_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -13,25 +13,26 @@ class FirstPage extends StatefulWidget {
 
 class _FirstPageState extends State<FirstPage>
     with SingleTickerProviderStateMixin {
-  late final _tabController = TabController(length: 2, vsync: this);
+  TabController? _tabController;
   bool status = false;
 
   @override
   void initState() {
     super.initState();
     checkLogin();
-    //print("controller val = ${_tabController.index}");
+    _tabController =
+        TabController(length: 2, vsync: this, initialIndex: (status) ? 0 : 1);
   }
 
   @override
   void dispose() {
     super.dispose();
-    _tabController.dispose();
+    _tabController!.dispose();
   }
 
   checkLogin() async {
     Variable.preferences = await SharedPreferences.getInstance();
-    //status = Variable.preferences!.getBool('login') ?? false;
+    status = Variable.preferences!.getBool('login') ?? false;
     // print("Status : $status");
   }
 
@@ -57,8 +58,8 @@ class _FirstPageState extends State<FirstPage>
           physics: const NeverScrollableScrollPhysics(),
           controller: _tabController,
           children: [
-            LoginPage(_tabController),
-            UserPage(_tabController),
+            LoginPage(_tabController!),
+            UserPage(_tabController!),
           ]),
     );
   }

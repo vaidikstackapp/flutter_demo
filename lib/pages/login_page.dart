@@ -1,11 +1,6 @@
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_demo/common/functions/function.dart';
 import 'package:flutter_demo/common/variable/variable.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-
-import '../model/user_model.dart';
 import '../service/user_service.dart';
 
 // ignore: must_be_immutable
@@ -88,7 +83,7 @@ class _LoginPageState extends State<LoginPage> {
                 validator: (value) {
                   if (value!.isEmpty) {
                     return "enter password";
-                  } else if (!Variable.passValid.hasMatch(value)) {
+                  } else if (!Variable.passPatten.hasMatch(value)) {
                     return """
                               Minimum 8 characters, 
                               at least one uppercase letter, 
@@ -105,8 +100,8 @@ class _LoginPageState extends State<LoginPage> {
                         setState(() {});
                       },
                       icon: (visible)
-                          ? const Icon(Icons.visibility)
-                          : const Icon(Icons.visibility_off)),
+                          ? const Icon(Icons.visibility_off)
+                          : const Icon(Icons.visibility)),
                   label: const Text("Password"),
                   border: const OutlineInputBorder(
                     borderSide: BorderSide(

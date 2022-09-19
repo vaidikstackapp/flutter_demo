@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_demo/model/user_model.dart';
 
 class UserService {
@@ -14,6 +15,8 @@ class UserService {
   }
 
   Future<void> deleteUser(String id) async {
+    FirebaseAuth.instance.signOut();
+
     try {
       await userCollection.doc(id).delete();
     } on FirebaseException catch (e) {

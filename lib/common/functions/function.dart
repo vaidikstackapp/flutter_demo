@@ -8,6 +8,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 
 import '../../model/user_model.dart';
 import '../../service/user_service.dart';
+import '../variable/variable.dart';
 
 class CommonFuntion {
   RegExp emailPatten = RegExp(
@@ -15,30 +16,6 @@ class CommonFuntion {
   RegExp passValid = RegExp(
       r"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$");
   bool check = false;
-
-  passwordValid(String password) {
-    if (password.isEmpty) {
-      return "Enter password";
-    } else if (!passValid.hasMatch(password)) {
-      return """
-      Minimum 8 characters, 
-      at least one uppercase letter, 
-      one lowercase letter, 
-      one number and one special character""";
-    } else {
-      return null;
-    }
-  }
-
-  emailValid(String email) {
-    if (email.isEmpty) {
-      return "Enter email";
-    } else if (!emailPatten.hasMatch(email)) {
-      return "Enter valid email";
-    } else {
-      return null;
-    }
-  }
 
   UserService userService = UserService();
 
@@ -69,16 +46,13 @@ class CommonFuntion {
     return userCredential;
   }
 
-  authentication(
-    TextEditingController tPassword,
-    TextEditingController tEmail,
-    TextEditingController tUsername,
-    TabController tabController,
-  ) async {
+  authentication(TextEditingController tEmail, TextEditingController tUsername,
+      TextEditingController tPassword, TabController tabController) async {
     String s = '';
     String email = tEmail.text;
     String password = tPassword.text;
     String userName = tUsername.text;
+    print("email : $email");
     try {
       final credential =
           await FirebaseAuth.instance.createUserWithEmailAndPassword(
@@ -97,6 +71,7 @@ class CommonFuntion {
       }
     } on FirebaseAuthException catch (e) {
       s = e.code;
+      print("e code = $s");
       if (e.code == 'weak-password') {
       } else if (e.code == 'email-already-in-use') {
         Fluttertoast.showToast(
@@ -114,10 +89,7 @@ class CommonFuntion {
       }
     }
     if (s != 'email-already-in-use') {
-      tEmail.clear();
-      tPassword.clear();
-      tUsername.clear();
-      //Variable.preferences!.setBool('login', true);
+      Variable.preferences!.setBool('login', true);
       tabController.animateTo(tabController.index + 1);
     }
   }
