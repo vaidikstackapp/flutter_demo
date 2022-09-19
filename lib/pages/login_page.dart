@@ -115,9 +115,18 @@ class _LoginPageState extends State<LoginPage> {
                         setState(() {});
                       },
                       icon: (visible)
-                          ? const Icon(Icons.visibility_off)
-                          : const Icon(Icons.visibility)),
-                  label: const Text("Password"),
+                          ? const Icon(
+                              Icons.visibility_off,
+                              color: Color(0xff1ba294),
+                            )
+                          : const Icon(Icons.visibility,
+                              color: Color(0xff1ba294))),
+                  label: const Text(
+                    "Password",
+                    style: TextStyle(
+                      color: Color(0xff1ba294),
+                    ),
+                  ),
                   border: const OutlineInputBorder(
                     borderSide: BorderSide(
                       color: Color(0xff1ba294),
@@ -180,7 +189,7 @@ class _LoginPageState extends State<LoginPage> {
 
   OutlineInputBorder outLineInputBorder({Color? color}) => OutlineInputBorder(
         borderSide: BorderSide(
-          width: 2,
+          width: 1,
           color: color ?? const Color(0xff1ba294),
         ),
       );
