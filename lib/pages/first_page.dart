@@ -14,15 +14,25 @@ class FirstPage extends StatefulWidget {
 class _FirstPageState extends State<FirstPage>
     with SingleTickerProviderStateMixin {
   late final _tabController = TabController(length: 2, vsync: this);
+  bool status = false;
 
   @override
   void initState() {
     super.initState();
     checkLogin();
+    //print("controller val = ${_tabController.index}");
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _tabController.dispose();
   }
 
   checkLogin() async {
     Variable.preferences = await SharedPreferences.getInstance();
+    status = Variable.preferences!.getBool('login') ?? false;
+    // print("Status : $status");
   }
 
   @override
@@ -47,8 +57,8 @@ class _FirstPageState extends State<FirstPage>
           physics: const NeverScrollableScrollPhysics(),
           controller: _tabController,
           children: [
-            LoginPage(_tabController),
             UserPage(_tabController),
+            LoginPage(_tabController),
           ]),
     );
   }

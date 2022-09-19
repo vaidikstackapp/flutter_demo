@@ -77,6 +77,7 @@ class _LoginPageState extends State<LoginPage> {
         tEmail.clear();
         tPassword.clear();
         tUsername.clear();
+        Variable.preferences!.setBool('login', true);
         widget.tabController.animateTo(widget.tabController.index + 1);
       }
     }
@@ -132,7 +133,7 @@ class _LoginPageState extends State<LoginPage> {
                         },
                         icon: (visible)
                             ? const Icon(Icons.visibility)
-                            : Icon(Icons.visibility_off)),
+                            : const Icon(Icons.visibility_off)),
                     errorText: (check)
                         ? commonFuntion.passwordValid(tPassword.text)
                         : null),
