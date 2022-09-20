@@ -92,12 +92,12 @@ class _UserPageState extends State<UserPage> {
                 ),
               )
             : FloatingActionButton(
-                child: Icon(Icons.navigate_before),
                 backgroundColor: const Color(0xff1ba294),
                 onPressed: () {
                   widget.tabController
                       .animateTo(widget.tabController.index - 1);
                 },
+                child: const Icon(Icons.navigate_before),
               ));
   }
 }
