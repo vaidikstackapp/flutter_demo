@@ -4,9 +4,11 @@
 
 import 'dart:convert';
 
-List<UserModel> userModelFromJson(String str) => List<UserModel>.from(json.decode(str).map((x) => UserModel.fromJson(x)));
+List<UserModel> userModelFromJson(String str) =>
+    List<UserModel>.from(json.decode(str).map((x) => UserModel.fromJson(x)));
 
-String userModelToJson(List<UserModel> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+String userModelToJson(List<UserModel> data) =>
+    json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
 class UserModel {
   UserModel({
@@ -24,18 +26,18 @@ class UserModel {
   String? profileImage;
 
   factory UserModel.fromJson(Map<String, dynamic> json) => UserModel(
-    uid: json["uid"],
-    name: json["name"],
-    email: json["email"],
-    phoneNumber: json["phoneNumber"],
-    profileImage: json["profileImage"],
-  );
+        uid: json["uid"],
+        name: json["name"],
+        email: json["email"],
+        phoneNumber: json["phoneNumber"],
+        profileImage: json["profileImage"],
+      );
 
   Map<String, dynamic> toJson() => {
-    "uid": uid,
-    "name": name,
-    "email": email,
-    "phoneNumber": phoneNumber,
-    "profileImage": profileImage,
-  };
+        "uid": uid,
+        "name": name,
+        "email": email,
+        "phoneNumber": phoneNumber,
+        "profileImage": profileImage,
+      };
 }

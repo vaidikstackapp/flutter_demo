@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_demo/common/variable/variable.dart';
+import 'package:flutter_demo/common/constants/constants.dart';
 import 'package:flutter_demo/pages/login_page.dart';
+import 'package:flutter_demo/pages/single_user.dart';
 import 'package:flutter_demo/pages/user_page.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class FirstPage extends StatefulWidget {
   const FirstPage({Key? key}) : super(key: key);
@@ -20,8 +20,7 @@ class _FirstPageState extends State<FirstPage>
   void initState() {
     super.initState();
     checkLogin();
-    _tabController =
-        TabController(length: 2, vsync: this, initialIndex: (status) ? 0 : 1);
+    _tabController = TabController(length: 3, vsync: this, initialIndex: 0);
   }
 
   @override
@@ -31,8 +30,7 @@ class _FirstPageState extends State<FirstPage>
   }
 
   checkLogin() async {
-    Variable.preferences = await SharedPreferences.getInstance();
-    status = Variable.preferences!.getBool('login') ?? false;
+    // status = getPrefBoolValue(isLogin) ?? false;
     // print("Status : $status");
   }
 
@@ -47,7 +45,7 @@ class _FirstPageState extends State<FirstPage>
           child: IgnorePointer(
             ignoring: true,
             child: TabBar(
-                indicatorColor: Colors.white,
+                indicatorColor: ColorConstants.textColor,
                 controller: _tabController,
                 tabs: const [
                   Tab(
@@ -56,6 +54,9 @@ class _FirstPageState extends State<FirstPage>
                   Tab(
                     icon: Icon(Icons.verified_user),
                   ),
+                  Tab(
+                    child: Icon(Icons.supervised_user_circle),
+                  )
                 ]),
           ),
         ),
@@ -66,6 +67,7 @@ class _FirstPageState extends State<FirstPage>
           children: [
             LoginPage(_tabController!),
             UserPage(_tabController!),
+            SingleUser(tabController: _tabController),
           ]),
     );
   }
