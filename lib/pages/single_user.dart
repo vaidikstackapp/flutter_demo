@@ -33,16 +33,6 @@ class _SingleUserState extends State<SingleUser> {
     //print("Profile URL : ${user!.photoURL}");
   }
 
-  // getUserData() async {
-  //   userModel = (await UserService().getSingleUserData(uid: userId))!;
-  //   print("userProfile : ${userModel!.profileImage}");
-  //   print("UID : ${userModel!.uid}");
-  //   print("UEmail : ${userModel!.email}");
-  //   setState(() {
-  //     status = true;
-  //   });
-  // }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -51,8 +41,7 @@ class _SingleUserState extends State<SingleUser> {
           children: [
             (user!.photoURL == null)
                 ? CircleAvatar(
-                    backgroundImage: const NetworkImage(
-                        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQQNvWDvQb_rCtRL-p_w329CtzHmfzfWP0FIw&usqp=CAU'),
+                    backgroundImage: NetworkImage(ImageConstants.networkImage),
                     radius: 50,
                     backgroundColor: ColorConstants.commonColor,
                   )
@@ -71,17 +60,17 @@ class _SingleUserState extends State<SingleUser> {
                     onPressed: () {
                       AuthService()
                           .signOutWithEmailPassword(widget.tabController);
-                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                          content: Text("Logout Successfully!")));
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          content: Text(StringConstants.snackBarText)));
                     },
-                    child: const Text("Log out"))
+                    child: Text(StringConstants.logoutButton))
                 : ElevatedButton(
                     onPressed: () {
                       AuthService().signOutWithGoogle(widget.tabController);
-                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                          content: Text("Logout Successfully!")));
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          content: Text(StringConstants.snackBarText)));
                     },
-                    child: const Text("Log out google account")),
+                    child: Text(StringConstants.logoutGoogleButton)),
           ],
         ),
       ),

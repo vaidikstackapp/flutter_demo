@@ -13,6 +13,9 @@ class StringConstants {
   static String isEmailEmpty = "Enter email";
   static String isPasswordEmpty = "Enter password";
   static String isEmailNotMatch = "Enter valid email";
+  static String snackBarText = "Logout Successfully!";
+  static String logoutButton = "Logout";
+  static String logoutGoogleButton = "Log out google account";
   static String isPasswordNotMatch = """
 Minimum 8 characters, 
 at least one uppercase letter, 
@@ -25,4 +28,9 @@ class ColorConstants {
   static Color textColor = Colors.white;
   static Color errorColor = Colors.red;
   static Color borderColor = Colors.black26;
+}
+
+class ImageConstants {
+  static String networkImage =
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQQNvWDvQb_rCtRL-p_w329CtzHmfzfWP0FIw&usqp=CAU";
 }
