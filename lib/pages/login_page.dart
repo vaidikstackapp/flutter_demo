@@ -156,13 +156,6 @@ class _LoginPageState extends State<LoginPage> {
           ),
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: ColorConstants.commonColor,
-        onPressed: () {
-          widget.tabController.animateTo(widget.tabController.index + 1);
-        },
-        child: const Icon(Icons.navigate_next),
-      ),
     );
   }
 

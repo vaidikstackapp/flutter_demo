@@ -85,13 +85,6 @@ class _SingleUserState extends State<SingleUser> {
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: ColorConstants.commonColor,
-        onPressed: () {
-          widget.tabController!.animateTo(widget.tabController!.index - 1);
-        },
-        child: const Icon(Icons.navigate_before),
-      ),
     );
   }
 }
