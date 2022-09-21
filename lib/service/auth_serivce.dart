@@ -25,9 +25,9 @@ class AuthService {
     }
 
     if (isAdmin) {
-      admin = 'true';
+      admin = 'True';
     } else {
-      admin = 'false';
+      admin = 'False';
     }
     try {
       final credential =
@@ -77,7 +77,15 @@ class AuthService {
     }
   }
 
-  Future<UserCredential> signInWithGoogle(TabController tabController) async {
+  Future<UserCredential> signInWithGoogle(
+      TabController tabController, bool isAdmin) async {
+    String admin = '';
+    if (isAdmin) {
+      admin = 'True';
+    } else {
+      admin = 'false';
+    }
+
     // Trigger the authentication flow
     final GoogleSignInAccount? googleUser = await googleSignIn.signIn();
 
@@ -97,12 +105,17 @@ class AuthService {
           profileImage: user.photoUrl ?? "",
           name: user.displayName,
           email: user.email,
+          admin: admin,
           phoneNumber: '');
       //print("UserID = ${userModel.uid}");
       await userService.createUser(userModel);
       //StringConstants.status = true;
     }
-    tabController.animateTo(tabController.index + 2);
+    if (isAdmin) {
+      tabController.animateTo(tabController.index + 1);
+    } else {
+      tabController.animateTo(tabController.index + 2);
+    }
     UserCredential userCredential =
         await FirebaseAuth.instance.signInWithCredential(credential);
     //print('credential :- $credential');

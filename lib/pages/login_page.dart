@@ -148,7 +148,7 @@ class _LoginPageState extends State<LoginPage> {
                   child: Text(StringConstants.signIn)),
               InkWell(
                 onTap: () async {
-                  AuthService().signInWithGoogle(widget.tabController);
+                  AuthService().signInWithGoogle(widget.tabController, isAdmin);
                 },
                 child: Container(
                   height: 40,
