@@ -48,7 +48,7 @@ class _FirstPageState extends State<FirstPage>
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(50),
           child: IgnorePointer(
-            ignoring: false,
+            ignoring: true,
             child: TabBar(
                 indicatorColor: ColorConstants.textColor,
                 controller: _tabController,

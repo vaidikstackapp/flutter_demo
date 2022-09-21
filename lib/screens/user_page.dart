@@ -20,6 +20,13 @@ class _UserPageState extends State<UserPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: ColorConstants.commonColor,
+        onPressed: () {
+          widget.tabController.animateTo(widget.tabController.index - 1);
+        },
+        child: const Icon(Icons.navigate_before),
+      ),
       body: Column(
         children: [
           Expanded(

@@ -63,14 +63,14 @@ class AuthService {
       }
       if (e.code == 'weak-password') {
       } else if (e.code == 'email-already-in-use') {
-        // Fluttertoast.showToast(
-        //     msg: "The account already exists for that email",
-        //     toastLength: Toast.LENGTH_SHORT,
-        //     gravity: ToastGravity.CENTER,
-        //     timeInSecForIosWeb: 1,
-        //     backgroundColor: ColorConstants.errorColor,
-        //     textColor: ColorConstants.textColor,
-        //     fontSize: 16.0);
+        Fluttertoast.showToast(
+            msg: "The account already exists for that email",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.CENTER,
+            timeInSecForIosWeb: 1,
+            backgroundColor: ColorConstants.errorColor,
+            textColor: ColorConstants.textColor,
+            fontSize: 16.0);
       }
       EasyLoading.dismiss();
     } catch (e) {
