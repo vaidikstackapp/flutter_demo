@@ -7,6 +7,7 @@ class AppTextField extends StatelessWidget {
   final String? lable;
   final Widget? suffixIcon;
   final bool? obscureText;
+  final bool? readonly;
   final TextEditingController? textEditingController;
   final FormFieldValidator<String>? validator;
 
@@ -15,6 +16,7 @@ class AppTextField extends StatelessWidget {
       this.lable,
       this.validator,
       this.suffixIcon,
+      this.readonly,
       this.textEditingController,
       this.obscureText});
 
@@ -23,6 +25,7 @@ class AppTextField extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: TextFormField(
+        readOnly: readonly ?? false,
         controller: textEditingController,
         validator: validator,
         obscuringCharacter: "*",

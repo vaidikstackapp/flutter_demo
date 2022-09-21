@@ -21,42 +21,99 @@ class _LoginPageState extends State<LoginPage> {
   TextEditingController tEmail = TextEditingController();
   TextEditingController tPassword = TextEditingController();
   TextEditingController tUsername = TextEditingController();
+  TextEditingController datePickerController = TextEditingController();
   bool check = false;
   UserService userService = UserService();
-  final _formKey = GlobalKey<FormState>();
+  final _loginKey = GlobalKey<FormState>();
+  final _signUp = GlobalKey<FormState>();
 
   bool visible = true;
   bool isAdmin = false;
   bool signUp = false;
+
   @override
   Widget build(BuildContext context) {
     return (signUp)
         ? Scaffold(
-            body: ListView(
-              shrinkWrap: true,
-              children: [
-                ListView(
-                  shrinkWrap: true,
-                  children: [
-                    const AppText(
-                      text: "Sign Up",
-                      fontSize: 20,
-                    ),
-                    AppButton(
-                      ontap: () {
-                        signUp = false;
-                        setState(() {});
-                      },
-                      text: 'submit',
-                    )
-                  ],
-                )
-              ],
+            body: Form(
+              key: _signUp,
+              child: Container(
+                margin:
+                    const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+                child: Center(
+                  child: ListView(
+                    physics: const BouncingScrollPhysics(),
+                    shrinkWrap: true,
+                    children: [
+                      const AppText(
+                        textAlign: TextAlign.center,
+                        text: "Sign Up Now",
+                        color: Colors.black,
+                        fontSize: 20,
+                      ),
+                      const AppText(
+                        textAlign: TextAlign.center,
+                        text: "Please fill the details and create account",
+                        color: Colors.black54,
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      const AppTextField(
+                        lable: 'Name',
+                      ),
+                      const AppTextField(
+                        lable: 'Email',
+                      ),
+                      const AppTextField(
+                        lable: 'Phone Number',
+                      ),
+                      AppTextField(
+                        textEditingController: datePickerController,
+                        readonly: true,
+                        lable: 'Birthdate',
+                        // suffixIcon: GestureDetector(
+                        //     onTap: () async {
+                        //       DateTime? pickDate = await showDatePicker(
+                        //           context: context,
+                        //           initialDate: DateTime.now(),
+                        //           firstDate: DateTime(1995),
+                        //           lastDate: DateTime(2022));
+                        //       if (pickDate != null) {
+                        //         datePickerController.text =
+                        //             "${pickDate.day} : ${pickDate.month.toString()} : ${pickDate.year}";
+                        //       }
+                        //       setState(() {});
+                        //     },
+                        //     child: Icon(
+                        //       Icons.calendar_today,
+                        //       color: ColorConstants.commonColor,
+                        //     )),
+                      ),
+                      const AppTextField(
+                        lable: 'Password',
+                      ),
+                      const AppTextField(
+                        lable: 'Conform password ',
+                      ),
+                      AppButton(
+                        ontap: () {
+                          signUp = false;
+                          setState(() {});
+                        },
+                        text: 'sign up',
+                      )
+                    ],
+                  ),
+                ),
+              ),
             ),
           )
         : Scaffold(
             body: Form(
-              key: _formKey,
+              key: _loginKey,
               child: Container(
                 margin:
                     const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
@@ -76,7 +133,7 @@ class _LoginPageState extends State<LoginPage> {
                       Container(
                         margin: const EdgeInsets.symmetric(vertical: 10),
                         child: const AppText(
-                            text: "please  login to continue using our app",
+                            text: "please login to continue using our app",
                             color: Colors.black54,
                             textAlign: TextAlign.center),
                       ),
@@ -157,7 +214,7 @@ class _LoginPageState extends State<LoginPage> {
                         text: 'sign in',
                         ontap: () {
                           FocusManager.instance.primaryFocus?.unfocus();
-                          if (_formKey.currentState!.validate()) {
+                          if (_loginKey.currentState!.validate()) {
                             AuthService().authentication(tEmail, tPassword,
                                 isAdmin, widget.tabController);
                           }
@@ -209,15 +266,15 @@ class _LoginPageState extends State<LoginPage> {
                           padding: const EdgeInsets.symmetric(vertical: 15),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
-                            children: const [
-                              AppText(
+                            children: [
+                              const AppText(
                                 textAlign: TextAlign.center,
                                 color: Colors.black,
                                 text: "Don't have and account? ",
                               ),
                               AppText(
                                 textAlign: TextAlign.center,
-                                color: Colors.blue,
+                                color: ColorConstants.commonColor,
                                 text: "Sign up",
                               ),
                             ],

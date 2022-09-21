@@ -40,7 +40,10 @@ class _FirstPageState extends State<FirstPage>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const AppText(text: "Firebase_demo"),
+        title: AppText(
+          text: "Firebase_demo",
+          color: ColorConstants.textColor,
+        ),
         centerTitle: true,
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(50),
