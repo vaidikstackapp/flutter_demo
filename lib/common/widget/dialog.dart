@@ -11,8 +11,14 @@ dialog(BuildContext context, String? id) {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10),
         ),
-        title: const Text("Delete Dialog"),
-        content: const Text("Do you want to delete this user?"),
+        title: const AppText(
+          text: "Delete Dialog",
+          color: Colors.black,
+        ),
+        content: const AppText(
+          text: "Do you want to delete this user?",
+          color: Colors.black,
+        ),
         actions: [
           ElevatedButton(
               onPressed: () {
@@ -22,7 +28,7 @@ dialog(BuildContext context, String? id) {
               },
               child: AppText(
                 text: "Yes",
-                color: ColorConstants.commonColor,
+                color: ColorConstants.textColor,
               )),
           ElevatedButton(
               onPressed: () {
@@ -30,7 +36,7 @@ dialog(BuildContext context, String? id) {
               },
               child: AppText(
                 text: "No",
-                color: ColorConstants.commonColor,
+                color: ColorConstants.textColor,
               )),
         ],
       );

@@ -171,12 +171,22 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                   ),
                 ),
-                const Padding(
-                  padding: EdgeInsets.symmetric(vertical: 15),
-                  child: AppText(
-                    textAlign: TextAlign.center,
-                    color: Colors.black,
-                    text: "Don't have and account? sign up",
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 15),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: const [
+                      AppText(
+                        textAlign: TextAlign.center,
+                        color: Colors.black,
+                        text: "Don't have and account? ",
+                      ),
+                      AppText(
+                        textAlign: TextAlign.center,
+                        color: Colors.blue,
+                        text: "Sign up",
+                      ),
+                    ],
                   ),
                 ),
               ],

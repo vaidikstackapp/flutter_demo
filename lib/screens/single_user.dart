@@ -22,6 +22,7 @@ class _SingleUserState extends State<SingleUser> {
   User? user;
   UserService userService = UserService();
   bool statusCheck = false;
+
   @override
   void initState() {
     super.initState();
@@ -59,10 +60,12 @@ class _SingleUserState extends State<SingleUser> {
                       ? const AppText(
                           text: "Email : No email found",
                           fontSize: 18,
+                          color: Colors.black,
                         )
                       : AppText(
                           text: "Email : ${user!.email}",
                           fontSize: 18,
+                          color: Colors.black,
                         ),
                   (user!.photoURL == null)
                       ? AppButton(

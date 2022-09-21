@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_demo/common/constants/constants.dart';
 import 'package:flutter_demo/common/widget/app_text.dart';
-import 'package:flutter_demo/pages/login_page.dart';
-import 'package:flutter_demo/pages/single_user.dart';
-import 'package:flutter_demo/pages/user_page.dart';
+import 'package:flutter_demo/screens/single_user.dart';
+import 'package:flutter_demo/screens/user_page.dart';
+
+import 'login_page.dart';
 
 class FirstPage extends StatefulWidget {
   const FirstPage({Key? key}) : super(key: key);
