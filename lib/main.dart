@@ -18,6 +18,8 @@ Future<void> main() async {
               style: ButtonStyle(
                   backgroundColor:
                       MaterialStateProperty.all(ColorConstants.commonColor))),
+          radioTheme: RadioThemeData(
+              fillColor: MaterialStateProperty.all(ColorConstants.commonColor)),
           appBarTheme:
               AppBarTheme(backgroundColor: ColorConstants.commonColor)),
       debugShowCheckedModeBanner: false,

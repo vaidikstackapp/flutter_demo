@@ -115,26 +115,27 @@ class _LoginPageState extends State<LoginPage> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
+                  const Text("User Type :-"),
                   Radio(
                     value: false,
                     groupValue: isAdmin,
                     onChanged: (value) {
                       isAdmin = !isAdmin;
-                      print("Normal : $isAdmin");
+                      //print("Normal : $isAdmin");
                       setState(() {});
                     },
                   ),
-                  Text('Normal'),
+                  const Text('Normal'),
                   Radio(
                     value: true,
                     groupValue: isAdmin,
                     onChanged: (value) {
                       isAdmin = !isAdmin;
-                      print("admin : $isAdmin");
+                      //  print("admin : $isAdmin");
                       setState(() {});
                     },
                   ),
-                  Text('Admin'),
+                  const Text('Admin'),
                 ],
               ),
               ElevatedButton(
