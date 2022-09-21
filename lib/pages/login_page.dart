@@ -23,7 +23,6 @@ class _LoginPageState extends State<LoginPage> {
 
   bool visible = true;
   bool isAdmin = false;
-  //bool radio2 = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
