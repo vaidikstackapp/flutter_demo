@@ -46,22 +46,12 @@ class _LoginPageState extends State<LoginPage> {
                   textAlign: TextAlign.center,
                   fontSize: 25,
                 ),
-                // Text(
-                //   textAlign: TextAlign.center,
-                //   "Log In Now",
-                //   style: TextStyle(color: Colors.black, fontSize: 25),
-                // ),
                 Container(
                   margin: const EdgeInsets.symmetric(vertical: 10),
                   child: const AppText(
                       text: "please  login to continue using our app",
                       color: Colors.black54,
                       textAlign: TextAlign.center),
-                  // child: const Text(
-                  //   textAlign: TextAlign.center,
-                  //   "please login to continue using our app",
-                  //   style: TextStyle(color: Colors.black54),
-                  // ),
                 ),
                 const SizedBox(
                   height: 20,
@@ -179,6 +169,14 @@ class _LoginPageState extends State<LoginPage> {
                             style: TextStyle(color: ColorConstants.textColor)),
                       ],
                     ),
+                  ),
+                ),
+                const Padding(
+                  padding: EdgeInsets.symmetric(vertical: 15),
+                  child: AppText(
+                    textAlign: TextAlign.center,
+                    color: Colors.black,
+                    text: "Don't have and account? sign up",
                   ),
                 ),
               ],
