@@ -11,6 +11,7 @@ import '../model/user_model.dart';
 class AuthService {
   UserService userService = UserService();
   GoogleSignIn googleSignIn = GoogleSignIn();
+  FirebaseAuth auth = FirebaseAuth.instance;
   void authentication(
       TextEditingController tEmail,
       TextEditingController tPassword,
@@ -30,8 +31,7 @@ class AuthService {
       admin = 'False';
     }
     try {
-      final credential =
-          await FirebaseAuth.instance.createUserWithEmailAndPassword(
+      final credential = await auth.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
@@ -107,9 +107,7 @@ class AuthService {
           email: user.email,
           admin: admin,
           phoneNumber: '');
-      //print("UserID = ${userModel.uid}");
       await userService.createUser(userModel);
-      //StringConstants.status = true;
     }
     if (isAdmin) {
       tabController.animateTo(tabController.index + 1);
@@ -118,7 +116,6 @@ class AuthService {
     }
     UserCredential userCredential =
         await FirebaseAuth.instance.signInWithCredential(credential);
-    //print('credential :- $credential');
     return userCredential;
   }
 
@@ -128,7 +125,19 @@ class AuthService {
   }
 
   signOutWithEmailPassword(TabController? tabController) async {
-    await FirebaseAuth.instance.signOut();
+    await auth.signOut();
     tabController!.animateTo(tabController.index - 2);
+  }
+
+  phoneAuthentication() async {
+    await FirebaseAuth.instance.verifyPhoneNumber(
+      phoneNumber: '+918154054412',
+      verificationCompleted: (phoneAuthCredential) {
+        //print("verificationCompleted===============>${credential}");
+      },
+      verificationFailed: (FirebaseException e) {},
+      codeSent: (verificationId, forceResendingToken) {},
+      codeAutoRetrievalTimeout: (verificationId) {},
+    );
   }
 }
