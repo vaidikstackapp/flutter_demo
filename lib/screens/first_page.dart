@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_demo/common/constants/constants.dart';
 import 'package:flutter_demo/common/widget/app_text.dart';
 import 'package:flutter_demo/screens/single_user.dart';
 import 'package:flutter_demo/screens/user_page.dart';
 
+import '../common/constants/color_constant.dart';
 import 'login_page.dart';
 
 class FirstPage extends StatefulWidget {

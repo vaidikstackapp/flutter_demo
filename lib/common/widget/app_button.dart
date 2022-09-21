@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_demo/common/constants/constants.dart';
 import 'package:flutter_demo/common/widget/app_text.dart';
+
+import '../constants/color_constant.dart';
 
 // ignore: must_be_immutable
 class AppButton extends StatelessWidget {

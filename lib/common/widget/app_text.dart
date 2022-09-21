@@ -1,5 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_demo/common/constants/constants.dart';
+import '../constants/color_constant.dart';
 
 class AppText extends StatelessWidget {
   final String? text;

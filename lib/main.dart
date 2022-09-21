@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_demo/screens/first_page.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 
-import 'common/constants/constants.dart';
+import 'common/constants/color_constant.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();

@@ -1,13 +1,13 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_demo/common/constants/constants.dart';
 import 'package:flutter_demo/common/utills/shared_preferance.dart';
 import 'package:flutter_demo/service/user_service.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import '../common/constants/color_constant.dart';
 import '../model/user_model.dart';
 
 class AuthService {

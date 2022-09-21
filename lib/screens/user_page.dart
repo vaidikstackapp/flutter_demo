@@ -4,7 +4,7 @@ import 'package:flutter_demo/model/user_model.dart';
 import 'package:flutter_demo/common/widget/dialog.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
-import '../common/constants/constants.dart';
+import '../common/constants/color_constant.dart';
 
 // ignore: must_be_immutable
 class UserPage extends StatefulWidget {

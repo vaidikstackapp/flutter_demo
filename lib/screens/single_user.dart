@@ -1,10 +1,13 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_demo/common/constants/constants.dart';
+import 'package:flutter_demo/common/constants/string_constsnt.dart';
 import 'package:flutter_demo/common/widget/app_button.dart';
 import 'package:flutter_demo/common/widget/app_text.dart';
 import 'package:flutter_demo/service/auth_serivce.dart';
 import 'package:flutter_demo/service/user_service.dart';
+
+import '../common/constants/color_constant.dart';
+import '../common/constants/image_constant.dart';
 
 // ignore: must_be_immutable
 class SingleUser extends StatefulWidget {
