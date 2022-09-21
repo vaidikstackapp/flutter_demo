@@ -19,7 +19,7 @@ class _FirstPageState extends State<FirstPage>
   @override
   void initState() {
     super.initState();
-    checkLogin();
+    // checkLogin();
     _tabController = TabController(length: 3, vsync: this, initialIndex: 0);
   }
 

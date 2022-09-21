@@ -22,7 +22,8 @@ class _LoginPageState extends State<LoginPage> {
   final _formKey = GlobalKey<FormState>();
 
   bool visible = true;
-
+  bool isAdmin = false;
+  //bool radio2 = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -111,12 +112,37 @@ class _LoginPageState extends State<LoginPage> {
                   cursorColor: ColorConstants.commonColor,
                 ),
               ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Radio(
+                    value: false,
+                    groupValue: isAdmin,
+                    onChanged: (value) {
+                      isAdmin = !isAdmin;
+                      print("Normal : $isAdmin");
+                      setState(() {});
+                    },
+                  ),
+                  Text('Normal'),
+                  Radio(
+                    value: true,
+                    groupValue: isAdmin,
+                    onChanged: (value) {
+                      isAdmin = !isAdmin;
+                      print("admin : $isAdmin");
+                      setState(() {});
+                    },
+                  ),
+                  Text('Admin'),
+                ],
+              ),
               ElevatedButton(
                   onPressed: () async {
                     FocusManager.instance.primaryFocus?.unfocus();
                     if (_formKey.currentState!.validate()) {
                       AuthService().authentication(
-                          tEmail, tPassword, widget.tabController);
+                          tEmail, tPassword, isAdmin, widget.tabController);
                     }
                   },
                   child: Text(StringConstants.signIn)),

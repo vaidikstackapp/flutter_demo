@@ -11,13 +11,23 @@ import '../model/user_model.dart';
 class AuthService {
   UserService userService = UserService();
   GoogleSignIn googleSignIn = GoogleSignIn();
-  void authentication(TextEditingController tEmail,
-      TextEditingController tPassword, TabController tabController) async {
+  void authentication(
+      TextEditingController tEmail,
+      TextEditingController tPassword,
+      bool isAdmin,
+      TabController tabController) async {
     String s = '';
+    String admin = '';
     String email = tEmail.text;
     String password = tPassword.text;
     if (kDebugMode) {
       print("email : $email");
+    }
+
+    if (isAdmin) {
+      admin = 'true';
+    } else {
+      admin = 'false';
     }
     try {
       final credential =
@@ -32,7 +42,8 @@ class AuthService {
             name: user.displayName ?? "",
             phoneNumber: user.phoneNumber ?? "",
             profileImage: user.photoURL ?? "",
-            uid: user.uid);
+            uid: user.uid,
+            admin: admin);
         await userService.createUser(userModel);
       }
     } on FirebaseAuthException catch (e) {
@@ -58,8 +69,11 @@ class AuthService {
     }
     if (s != 'email-already-in-use') {
       setPrefBoolValue(isLogin, true);
-
-      tabController.animateTo(tabController.index + 2);
+      if (isAdmin) {
+        tabController.animateTo(tabController.index + 1);
+      } else {
+        tabController.animateTo(tabController.index + 2);
+      }
     }
   }
 
