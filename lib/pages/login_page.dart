@@ -66,6 +66,7 @@ class _LoginPageState extends State<LoginPage> {
                     controller: tEmail,
                     cursorColor: ColorConstants.commonColor,
                     decoration: InputDecoration(
+                      contentPadding: EdgeInsets.symmetric(vertical: 10),
                       label: Text(
                         StringConstants.email,
                         style: TextStyle(color: ColorConstants.commonColor),
