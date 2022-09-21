@@ -14,6 +14,7 @@ Future<void> main() async {
     child: MaterialApp(
       home: const FirstPage(),
       theme: ThemeData(
+          fontFamily: 'Montserrat',
           elevatedButtonTheme: ElevatedButtonThemeData(
               style: ButtonStyle(
                   backgroundColor:

@@ -38,7 +38,7 @@ class _LoginPageState extends State<LoginPage> {
                 const Text(
                   textAlign: TextAlign.center,
                   "Log In Now",
-                  style: TextStyle(color: Colors.black, fontSize: 30),
+                  style: TextStyle(color: Colors.black, fontSize: 25),
                 ),
                 Container(
                   margin: const EdgeInsets.symmetric(vertical: 10),
@@ -210,7 +210,7 @@ class _LoginPageState extends State<LoginPage> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Image.asset(
-                          "images/google.png",
+                          "assets/images/google.png",
                           height: 20,
                           width: 20,
                           fit: BoxFit.cover,
