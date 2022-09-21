@@ -83,7 +83,7 @@ class AuthService {
     if (isAdmin) {
       admin = 'True';
     } else {
-      admin = 'false';
+      admin = 'False';
     }
 
     // Trigger the authentication flow
