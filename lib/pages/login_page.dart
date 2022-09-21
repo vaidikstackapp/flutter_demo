@@ -23,6 +23,7 @@ class _LoginPageState extends State<LoginPage> {
 
   bool visible = true;
   bool isAdmin = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -66,9 +67,11 @@ class _LoginPageState extends State<LoginPage> {
                     controller: tEmail,
                     cursorColor: ColorConstants.commonColor,
                     decoration: InputDecoration(
-                      contentPadding: EdgeInsets.symmetric(vertical: 10),
+                      contentPadding: const EdgeInsets.symmetric(
+                          vertical: 10, horizontal: 15),
                       label: Text(
                         StringConstants.email,
+                        textAlign: TextAlign.justify,
                         style: TextStyle(color: ColorConstants.commonColor),
                       ),
                       border: OutlineInputBorder(
@@ -100,18 +103,24 @@ class _LoginPageState extends State<LoginPage> {
                     },
                     controller: tPassword,
                     decoration: InputDecoration(
-                      suffixIcon: IconButton(
-                          onPressed: () {
+                      contentPadding: const EdgeInsets.symmetric(
+                          vertical: 10, horizontal: 15),
+                      suffixIcon: GestureDetector(
+                          onTap: () {
                             visible = !visible;
                             setState(() {});
                           },
-                          icon: (visible)
+                          child: (visible)
                               ? Icon(
                                   Icons.visibility_off,
+                                  size: 18,
                                   color: ColorConstants.commonColor,
                                 )
-                              : Icon(Icons.visibility,
-                                  color: ColorConstants.commonColor)),
+                              : Icon(
+                                  Icons.visibility,
+                                  size: 18,
+                                  color: ColorConstants.commonColor,
+                                )),
                       label: Text(
                         StringConstants.password,
                         style: TextStyle(
