@@ -55,20 +55,22 @@ class AuthService {
       EasyLoading.dismiss();
     } on FirebaseAuthException catch (e) {
       s = e.code;
-      print("authentication======================>${s}");
+      if (kDebugMode) {
+        print("authentication======================>$s");
+      }
       if (kDebugMode) {
         print("e code = $s");
       }
       if (e.code == 'weak-password') {
       } else if (e.code == 'email-already-in-use') {
-        Fluttertoast.showToast(
-            msg: "The account already exists for that email",
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.CENTER,
-            timeInSecForIosWeb: 1,
-            backgroundColor: ColorConstants.errorColor,
-            textColor: ColorConstants.textColor,
-            fontSize: 16.0);
+        // Fluttertoast.showToast(
+        //     msg: "The account already exists for that email",
+        //     toastLength: Toast.LENGTH_SHORT,
+        //     gravity: ToastGravity.CENTER,
+        //     timeInSecForIosWeb: 1,
+        //     backgroundColor: ColorConstants.errorColor,
+        //     textColor: ColorConstants.textColor,
+        //     fontSize: 16.0);
       }
       EasyLoading.dismiss();
     } catch (e) {
@@ -77,7 +79,16 @@ class AuthService {
       }
     }
     EasyLoading.dismiss();
-    if (s != 'email-already-in-use') {
+    if (s == 'network-request-failed') {
+      Fluttertoast.showToast(
+          msg: "network require",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.CENTER,
+          timeInSecForIosWeb: 1,
+          backgroundColor: ColorConstants.errorColor,
+          textColor: ColorConstants.textColor,
+          fontSize: 16.0);
+    } else if (s != 'email-already-in-use') {
       setPrefBoolValue(isLogin, true);
       if (isAdmin) {
         tabController.animateTo(tabController.index + 1);

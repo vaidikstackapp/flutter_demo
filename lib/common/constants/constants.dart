@@ -14,8 +14,8 @@ class StringConstants {
   static String isPasswordEmpty = "Enter password";
   static String isEmailNotMatch = "Enter valid email";
   static String snackBarText = "Logout Successfully!";
-  static String logoutButton = "Logout";
-  static String logoutGoogleButton = "Log out google account";
+  static String logoutButtonText = "Logout";
+  static String logoutGoogleButtonText = "Log out google account";
   static String isPasswordNotMatch = """
 Minimum 8 characters, 
 at least one uppercase letter, 

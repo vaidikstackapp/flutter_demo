@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_demo/common/constants/constants.dart';
+import 'package:flutter_demo/common/widget/app_text.dart';
 import 'package:flutter_demo/pages/login_page.dart';
 import 'package:flutter_demo/pages/single_user.dart';
 import 'package:flutter_demo/pages/user_page.dart';
@@ -38,7 +39,7 @@ class _FirstPageState extends State<FirstPage>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Firebase_demo"),
+        title: const AppText(text: "Firebase_demo"),
         centerTitle: true,
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(50),

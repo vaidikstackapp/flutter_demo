@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_demo/common/widget/app_button.dart';
+import 'package:flutter_demo/common/widget/app_text.dart';
+import 'package:flutter_demo/common/widget/app_textfield.dart';
 import 'package:flutter_demo/service/auth_serivce.dart';
 import '../common/constants/constants.dart';
 import '../service/user_service.dart';
@@ -37,125 +40,89 @@ class _LoginPageState extends State<LoginPage> {
               physics: const BouncingScrollPhysics(),
               shrinkWrap: true,
               children: [
-                const Text(
+                const AppText(
+                  text: "Log In Now",
+                  color: Colors.black,
                   textAlign: TextAlign.center,
-                  "Log In Now",
-                  style: TextStyle(color: Colors.black, fontSize: 25),
+                  fontSize: 25,
                 ),
+                // Text(
+                //   textAlign: TextAlign.center,
+                //   "Log In Now",
+                //   style: TextStyle(color: Colors.black, fontSize: 25),
+                // ),
                 Container(
                   margin: const EdgeInsets.symmetric(vertical: 10),
-                  child: const Text(
-                    textAlign: TextAlign.center,
-                    "please login to continue using our app",
-                    style: TextStyle(color: Colors.black54),
-                  ),
+                  child: const AppText(
+                      text: "please  login to continue using our app",
+                      color: Colors.black54,
+                      textAlign: TextAlign.center),
+                  // child: const Text(
+                  //   textAlign: TextAlign.center,
+                  //   "please login to continue using our app",
+                  //   style: TextStyle(color: Colors.black54),
+                  // ),
                 ),
                 const SizedBox(
                   height: 20,
                 ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: TextFormField(
-                    textInputAction: TextInputAction.next,
-                    validator: (value) {
-                      if (value!.isEmpty) {
-                        return StringConstants.isEmailEmpty;
-                      } else if (!StringConstants.emailPatten.hasMatch(value)) {
-                        return StringConstants.isEmailNotMatch;
-                      }
-                      return null;
-                    },
-                    controller: tEmail,
-                    cursorColor: ColorConstants.commonColor,
-                    decoration: InputDecoration(
-                      contentPadding: const EdgeInsets.symmetric(
-                          vertical: 10, horizontal: 15),
-                      label: Text(
-                        StringConstants.email,
-                        textAlign: TextAlign.justify,
-                        style: TextStyle(color: ColorConstants.commonColor),
-                      ),
-                      border: OutlineInputBorder(
-                        borderSide: BorderSide(
-                          color: ColorConstants.commonColor,
-                        ),
-                      ),
-                      enabledBorder: outLineInputBorder(),
-                      disabledBorder: outLineInputBorder(),
-                      focusedBorder: outLineInputBorder(),
-                      errorBorder:
-                          outLineInputBorder(color: ColorConstants.errorColor),
-                    ),
-                  ),
+                AppTextField(
+                  textEditingController: tEmail,
+                  lable: StringConstants.email,
+                  validator: (value) {
+                    if (value!.isEmpty) {
+                      return StringConstants.isEmailEmpty;
+                    } else if (!StringConstants.emailPatten.hasMatch(value)) {
+                      return StringConstants.isEmailNotMatch;
+                    }
+                    return null;
+                  },
                 ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: TextFormField(
-                    textInputAction: TextInputAction.next,
-                    obscureText: visible,
-                    obscuringCharacter: "*",
-                    validator: (value) {
-                      if (value!.isEmpty) {
-                        return StringConstants.isPasswordEmpty;
-                      } else if (!StringConstants.passPatten.hasMatch(value)) {
-                        return StringConstants.isPasswordNotMatch;
-                      }
-                      return null;
-                    },
-                    controller: tPassword,
-                    decoration: InputDecoration(
-                      contentPadding: const EdgeInsets.symmetric(
-                          vertical: 10, horizontal: 15),
-                      suffixIcon: GestureDetector(
-                          onTap: () {
-                            visible = !visible;
-                            setState(() {});
-                          },
-                          child: (visible)
-                              ? Icon(
-                                  Icons.visibility_off,
-                                  size: 18,
-                                  color: ColorConstants.commonColor,
-                                )
-                              : Icon(
-                                  Icons.visibility,
-                                  size: 18,
-                                  color: ColorConstants.commonColor,
-                                )),
-                      label: Text(
-                        StringConstants.password,
-                        style: TextStyle(
-                          color: ColorConstants.commonColor,
-                        ),
-                      ),
-                      border: OutlineInputBorder(
-                        borderSide: BorderSide(
-                          color: ColorConstants.commonColor,
-                        ),
-                      ),
-                      enabledBorder: outLineInputBorder(),
-                      disabledBorder: outLineInputBorder(),
-                      focusedBorder: outLineInputBorder(),
-                      errorBorder:
-                          outLineInputBorder(color: ColorConstants.errorColor),
-                    ),
-                    cursorColor: ColorConstants.commonColor,
-                  ),
+                AppTextField(
+                  textEditingController: tPassword,
+                  obscureText: visible,
+                  suffixIcon: GestureDetector(
+                      onTap: () {
+                        visible = !visible;
+                        setState(() {});
+                      },
+                      child: (visible)
+                          ? Icon(
+                              Icons.visibility_off,
+                              size: 18,
+                              color: ColorConstants.commonColor,
+                            )
+                          : Icon(
+                              Icons.visibility,
+                              size: 18,
+                              color: ColorConstants.commonColor,
+                            )),
+                  lable: "Password",
+                  validator: (value) {
+                    if (value!.isEmpty) {
+                      return StringConstants.isPasswordEmpty;
+                    } else if (!StringConstants.passPatten.hasMatch(value)) {
+                      return StringConstants.isPasswordNotMatch;
+                    }
+                    return null;
+                  },
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Text("Type : "),
+                    const AppText(text: "Type :", color: Colors.black),
                     Radio(
                       value: false,
                       groupValue: isAdmin,
                       onChanged: (value) {
                         isAdmin = !isAdmin;
-                        //print("Normal : $isAdmin");
                         setState(() {});
                       },
                     ),
-                    const Text('User'),
+                    const AppText(
+                      text: "User",
+                      color: Colors.black,
+                    ),
                     Radio(
                       value: true,
                       groupValue: isAdmin,
@@ -165,36 +132,18 @@ class _LoginPageState extends State<LoginPage> {
                         setState(() {});
                       },
                     ),
-                    const Text('Admin'),
+                    const AppText(text: "Admin", color: Colors.black),
                   ],
                 ),
-                GestureDetector(
-                  onTap: () {
+                AppButton(
+                  text: 'sign in',
+                  ontap: () {
                     FocusManager.instance.primaryFocus?.unfocus();
                     if (_formKey.currentState!.validate()) {
                       AuthService().authentication(
                           tEmail, tPassword, isAdmin, widget.tabController);
                     }
                   },
-                  child: Container(
-                    width: 160,
-                    height: 40,
-                    decoration: BoxDecoration(
-                        color: ColorConstants.commonColor,
-                        borderRadius: BorderRadius.circular(5),
-                        boxShadow: [
-                          BoxShadow(
-                              color: ColorConstants.borderColor,
-                              offset: const Offset(0, 5),
-                              blurRadius: 5),
-                        ]),
-                    alignment: Alignment.center,
-                    margin:
-                        const EdgeInsets.symmetric(horizontal: 50, vertical: 10)
-                            .copyWith(top: 30),
-                    child: Text(StringConstants.signIn,
-                        style: TextStyle(color: ColorConstants.textColor)),
-                  ),
                 ),
                 GestureDetector(
                   onTap: () async {
