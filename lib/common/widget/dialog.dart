@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_demo/common/constants/constants.dart';
+import 'package:flutter_demo/common/widget/app_text.dart';
 import 'package:flutter_demo/service/user_service.dart';
 
 dialog(BuildContext context, String? id) {
@@ -18,12 +20,18 @@ dialog(BuildContext context, String? id) {
                 userService.deleteUser(id!);
                 Navigator.pop(context);
               },
-              child: const Text("Yes")),
+              child: AppText(
+                text: "Yes",
+                color: ColorConstants.commonColor,
+              )),
           ElevatedButton(
               onPressed: () {
                 Navigator.pop(context);
               },
-              child: const Text("No")),
+              child: AppText(
+                text: "No",
+                color: ColorConstants.commonColor,
+              )),
         ],
       );
     },

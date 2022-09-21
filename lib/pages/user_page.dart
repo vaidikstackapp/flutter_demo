@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_demo/model/user_model.dart';
-import 'package:flutter_demo/widget/dialog.dart';
+import 'package:flutter_demo/common/widget/dialog.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 import '../common/constants/constants.dart';
