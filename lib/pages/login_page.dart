@@ -69,6 +69,7 @@ class _LoginPageState extends State<LoginPage> {
                 child: TextFormField(
                   textInputAction: TextInputAction.next,
                   obscureText: visible,
+                  obscuringCharacter: "*",
                   validator: (value) {
                     if (value!.isEmpty) {
                       return StringConstants.isPasswordEmpty;
