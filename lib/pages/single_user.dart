@@ -26,11 +26,6 @@ class _SingleUserState extends State<SingleUser> {
 
     FirebaseAuth auth = FirebaseAuth.instance;
     user = auth.currentUser;
-
-    // photoUrl = user!.photoURL!;
-    //print("user : ${user!.uid}");
-    //print("userEmail : ${user!.email}");
-    //print("Profile URL : ${user!.photoURL}");
   }
 
   @override
@@ -39,7 +34,7 @@ class _SingleUserState extends State<SingleUser> {
       body: Center(
         child: Column(
           children: [
-            (user!.photoURL == null)
+            (user?.photoURL == null)
                 ? CircleAvatar(
                     backgroundImage: NetworkImage(ImageConstants.networkImage),
                     radius: 50,
@@ -54,7 +49,7 @@ class _SingleUserState extends State<SingleUser> {
                     style: TextStyle(fontSize: 20),
                   )
                 : Text("Email : ${user!.email}",
-                    style: const TextStyle(fontSize: 20)),
+                    style: const TextStyle(fontSize: 18)),
             (user!.photoURL == null)
                 ? ElevatedButton(
                     onPressed: () {

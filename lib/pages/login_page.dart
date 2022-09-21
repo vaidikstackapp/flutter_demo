@@ -34,6 +34,7 @@ class _LoginPageState extends State<LoginPage> {
           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
           child: Center(
             child: ListView(
+              physics: const BouncingScrollPhysics(),
               shrinkWrap: true,
               children: [
                 const Text(

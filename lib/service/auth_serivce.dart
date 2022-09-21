@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_demo/common/constants/constants.dart';
 import 'package:flutter_demo/common/utills/shared_preferance.dart';
 import 'package:flutter_demo/service/user_service.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import '../model/user_model.dart';
@@ -31,6 +33,10 @@ class AuthService {
       admin = 'False';
     }
     try {
+      EasyLoading.show(
+          indicator: SpinKitCircle(
+        color: ColorConstants.commonColor,
+      ));
       final credential = await auth.createUserWithEmailAndPassword(
         email: email,
         password: password,
@@ -46,8 +52,10 @@ class AuthService {
             admin: admin);
         await userService.createUser(userModel);
       }
+      EasyLoading.dismiss();
     } on FirebaseAuthException catch (e) {
       s = e.code;
+      print("authentication======================>${s}");
       if (kDebugMode) {
         print("e code = $s");
       }
@@ -62,11 +70,13 @@ class AuthService {
             textColor: ColorConstants.textColor,
             fontSize: 16.0);
       }
+      EasyLoading.dismiss();
     } catch (e) {
       if (kDebugMode) {
         print(e);
       }
     }
+    EasyLoading.dismiss();
     if (s != 'email-already-in-use') {
       setPrefBoolValue(isLogin, true);
       if (isAdmin) {

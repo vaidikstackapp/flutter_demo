@@ -58,12 +58,14 @@ class _UserPageState extends State<UserPage> {
                             )),
                         leading: CircleAvatar(
                             backgroundColor: ColorConstants.commonColor,
-                            backgroundImage:
-                                (userModel.profileImage.toString().isNotEmpty)
-                                    ? NetworkImage('${userModel.profileImage}',
-                                        scale: 50)
-                                    : NetworkImage(ImageConstants.networkImage,
-                                        scale: 20)),
+                            backgroundImage: (userModel.profileImage
+                                    .toString()
+                                    .isNotEmpty)
+                                ? NetworkImage('${userModel.profileImage}',
+                                    scale: 50)
+                                : const NetworkImage(
+                                    'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQQNvWDvQb_rCtRL-p_w329CtzHmfzfWP0FIw&usqp=CAU',
+                                    scale: 20)),
                         title: (userModel.email.toString().isNotEmpty)
                             ? Text("${userModel.email}")
                             : const Text("No Email"),

@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_demo/pages/first_page.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 import 'common/constants/constants.dart';
 
@@ -12,6 +13,7 @@ Future<void> main() async {
       FocusManager.instance.primaryFocus?.unfocus();
     },
     child: MaterialApp(
+      builder: EasyLoading.init(),
       home: const FirstPage(),
       theme: ThemeData(
           fontFamily: 'Montserrat',
