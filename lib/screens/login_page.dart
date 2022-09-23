@@ -37,7 +37,11 @@ class _LoginPageState extends State<LoginPage> {
   bool visible2 = true;
   bool isAdmin = false;
   bool signUp = false;
-  bool gender = false;
+  bool gender = true;
+
+  AuthService service = AuthService();
+
+  String genderStore = 'Male';
 
   @override
   Widget build(BuildContext context) {
@@ -91,6 +95,7 @@ class _LoginPageState extends State<LoginPage> {
                             groupValue: gender,
                             onChanged: (value) {
                               gender = !gender;
+                              genderStore = "Male";
                               setState(() {});
                             },
                           ),
@@ -103,6 +108,7 @@ class _LoginPageState extends State<LoginPage> {
                             groupValue: gender,
                             onChanged: (value) {
                               gender = !gender;
+                              genderStore = "Female";
                               setState(() {});
                             },
                           ),
@@ -179,6 +185,15 @@ class _LoginPageState extends State<LoginPage> {
                       AppTextField(
                         textEditingController: passwordController,
                         obscureText: visible1,
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return StringConstants.isPasswordEmpty;
+                          } else if (!StringConstants.passPatten
+                              .hasMatch(value)) {
+                            return StringConstants.isPasswordNotMatch;
+                          }
+                          return null;
+                        },
                         suffixIcon: GestureDetector(
                             onTap: () {
                               visible1 = !visible1;
@@ -196,15 +211,6 @@ class _LoginPageState extends State<LoginPage> {
                                     color: ColorConstants.commonColor,
                                   )),
                         lable: "Password",
-                        validator: (value) {
-                          if (value!.isEmpty) {
-                            return StringConstants.isPasswordEmpty;
-                          } else if (!StringConstants.passPatten
-                              .hasMatch(value)) {
-                            return StringConstants.isPasswordNotMatch;
-                          }
-                          return null;
-                        },
                       ),
                       AppTextField(
                         textEditingController: conformPasswordController,
@@ -239,14 +245,38 @@ class _LoginPageState extends State<LoginPage> {
                         ontap: () {
                           FocusManager.instance.primaryFocus?.unfocus();
                           if (_signUp.currentState!.validate()) {
-                            signUp = false;
+                            genderStore = "Male";
+                            // signUp = false;
+                            // visible1 = true;
+                            // visible2 = true;
+                            // gender = true;
+                            // userNameController.clear();
+                            // emailController.clear();
+                            // contactController.clear();
+                            // datePickerController.clear();
+                            // passwordController.clear();
+                            // conformPasswordController.clear();
 
-                            userNameController.clear();
+                            String name = userNameController.text;
+                            String email = emailController.text;
+                            String password = passwordController.text;
+                            String birthdate = datePickerController.text;
+                            String phoneNumber = contactController.text;
+
+                            service.signUpWithEmailPassword(
+                                gender: genderStore,
+                                name: name,
+                                email: email,
+                                password: password,
+                                tabController: widget.tabController,
+                                birthdate: birthdate,
+                                phoneNumber: phoneNumber);
+                            signUp = false;
                           }
                           setState(() {});
                         },
                         text: 'sign up',
-                      )
+                      ),
                     ],
                   ),
                 ),
@@ -288,9 +318,6 @@ class _LoginPageState extends State<LoginPage> {
                         validator: (value) {
                           if (value!.isEmpty) {
                             return StringConstants.isEmailEmpty;
-                          } else if (!StringConstants.emailPatten
-                              .hasMatch(value)) {
-                            return StringConstants.isEmailNotMatch;
                           }
                           return null;
                         },
@@ -318,9 +345,6 @@ class _LoginPageState extends State<LoginPage> {
                         validator: (value) {
                           if (value!.isEmpty) {
                             return StringConstants.isPasswordEmpty;
-                          } else if (!StringConstants.passPatten
-                              .hasMatch(value)) {
-                            return StringConstants.isPasswordNotMatch;
                           }
                           return null;
                         },
@@ -357,8 +381,12 @@ class _LoginPageState extends State<LoginPage> {
                         ontap: () {
                           FocusManager.instance.primaryFocus?.unfocus();
                           if (_loginKey.currentState!.validate()) {
-                            AuthService().signInWithEmailPassword(tEmail,
-                                tPassword, isAdmin, widget.tabController);
+                            String email = tEmail.text;
+                            String password = tPassword.text;
+                            service.signInWithEmailPassword(tEmail, tPassword,
+                                tabController: widget.tabController,
+                                email: email,
+                                password: password);
                           }
                         },
                       ),
@@ -402,6 +430,8 @@ class _LoginPageState extends State<LoginPage> {
                       GestureDetector(
                         onTap: () {
                           signUp = true;
+                          tEmail.clear();
+                          tPassword.clear();
                           setState(() {});
                         },
                         child: Padding(
@@ -430,11 +460,4 @@ class _LoginPageState extends State<LoginPage> {
             ),
           );
   }
-
-  OutlineInputBorder outLineInputBorder({Color? color}) => OutlineInputBorder(
-        borderSide: BorderSide(
-          width: 1,
-          color: color ?? ColorConstants.commonColor,
-        ),
-      );
 }

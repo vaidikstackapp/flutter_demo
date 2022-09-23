@@ -14,39 +14,37 @@ class AuthService {
   UserService userService = UserService();
   GoogleSignIn googleSignIn = GoogleSignIn();
   FirebaseAuth auth = FirebaseAuth.instance;
-  void signInWithEmailPassword(
-      TextEditingController tEmail,
-      TextEditingController tPassword,
-      bool isAdmin,
-      TabController tabController) async {
+
+  void signUpWithEmailPassword(
+      {String? email,
+      String? password,
+      String? name,
+      String? gender,
+      String? birthdate,
+      String? phoneNumber,
+      TabController? tabController}) async {
     String s = '';
-    // String admin = '';
-    String email = tEmail.text;
-    String password = tPassword.text;
     if (kDebugMode) {
       print("email : $email");
     }
 
-    if (isAdmin) {
-      // admin = 'True';
-    } else {
-      // admin = 'False';
-    }
     try {
       EasyLoading.show(
           indicator: SpinKitCircle(
         color: ColorConstants.commonColor,
       ));
       final credential = await auth.createUserWithEmailAndPassword(
-        email: email,
-        password: password,
+        email: email!,
+        password: password!,
       );
       if (credential.user != null) {
         User? user = credential.user;
         UserModel userModel = UserModel(
           email: user!.email,
-          name: user.displayName ?? "",
-          phoneNumber: user.phoneNumber ?? "",
+          gender: gender,
+          birthdate: birthdate,
+          name: name,
+          phoneNumber: phoneNumber,
           profileImage: user.photoURL ?? "",
           uid: user.uid,
         );
@@ -79,23 +77,66 @@ class AuthService {
       }
     }
     EasyLoading.dismiss();
-    if (s == 'network-request-failed') {
-      Fluttertoast.showToast(
-          msg: "network require",
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.CENTER,
-          timeInSecForIosWeb: 1,
-          backgroundColor: ColorConstants.errorColor,
-          textColor: ColorConstants.textColor,
-          fontSize: 16.0);
-    } else if (s != 'email-already-in-use') {
-      setPrefBoolValue(isLogin, true);
-      if (isAdmin) {
-        tabController.animateTo(tabController.index + 1);
-      } else {
-        tabController.animateTo(tabController.index + 2);
+    // if (s == 'network-request-failed') {
+    //   Fluttertoast.showToast(
+    //       msg: "network require",
+    //       toastLength: Toast.LENGTH_SHORT,
+    //       gravity: ToastGravity.CENTER,
+    //       timeInSecForIosWeb: 1,
+    //       backgroundColor: ColorConstants.errorColor,
+    //       textColor: ColorConstants.textColor,
+    //       fontSize: 16.0);
+    // } else if (s != 'email-already-in-use') {
+    //   setPrefBoolValue(isLogin, true);
+    //   if (isAdmin) {
+    //     tabController.animateTo(tabController.index + 1);
+    //   } else {
+    //     tabController.animateTo(tabController.index + 2);
+    //   }
+    // }
+  }
+
+  Future<void> signInWithEmailPassword(
+      TextEditingController tEmail, TextEditingController tPassword,
+      {TabController? tabController, String? email, String? password}) async {
+    try {
+      EasyLoading.show(
+          indicator: SpinKitCircle(
+        color: ColorConstants.commonColor,
+      ));
+      final credential = await auth.signInWithEmailAndPassword(
+          email: email!, password: password!);
+      print(
+          "signInWithEmailPassword credential======================>${credential.user}");
+
+      if (credential.user != null) {
+        tabController!.animateTo(tabController.index + 2);
       }
+      EasyLoading.dismiss();
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'user-not-found') {
+        print('No user found for that email.');
+        Fluttertoast.showToast(
+            msg: "No user found for that email",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.CENTER,
+            timeInSecForIosWeb: 1,
+            backgroundColor: ColorConstants.errorColor,
+            textColor: ColorConstants.textColor,
+            fontSize: 16.0);
+      } else if (e.code == 'wrong-password') {
+        Fluttertoast.showToast(
+            msg: "wrong-password",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.CENTER,
+            timeInSecForIosWeb: 1,
+            backgroundColor: ColorConstants.errorColor,
+            textColor: ColorConstants.textColor,
+            fontSize: 16.0);
+      }
+      EasyLoading.dismiss();
     }
+    EasyLoading.dismiss();
   }
 
   Future<UserCredential> signInWithGoogle(

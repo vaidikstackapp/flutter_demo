@@ -4,6 +4,7 @@ import 'package:flutter_demo/common/constants/string_constsnt.dart';
 import 'package:flutter_demo/common/widget/app_button.dart';
 import 'package:flutter_demo/common/widget/app_snackbar.dart';
 import 'package:flutter_demo/common/widget/app_text.dart';
+import 'package:flutter_demo/model/user_model.dart';
 import 'package:flutter_demo/service/auth_serivce.dart';
 import 'package:flutter_demo/service/user_service.dart';
 
@@ -33,11 +34,14 @@ class _SingleUserState extends State<SingleUser> {
     getCurrentUser();
   }
 
+  UserModel? userModel;
+
   Future<void> getCurrentUser() async {
     FirebaseAuth auth = FirebaseAuth.instance;
     user = auth.currentUser;
-    if (user == null) {
-      await user!.reload();
+    if (user != null) {
+      userModel = await userService.getCurrentUser(id: user!.uid);
+      print("userModel===============>${userModel!.toJson()}");
     }
     statusCheck = true;
     setState(() {});
@@ -58,26 +62,41 @@ class _SingleUserState extends State<SingleUser> {
                           backgroundColor: ColorConstants.commonColor,
                         )
                       : CircleAvatar(
-                          backgroundImage: NetworkImage('${user!.photoURL}'),
+                          backgroundImage:
+                              NetworkImage('${userModel!.profileImage}'),
                         ),
-                  (user!.email == null)
-                      ? AppText(
-                          text: "Email : No email found",
-                          fontSize: 18,
-                          color: ColorConstants.black,
-                        )
-                      : AppText(
-                          text: "Email : ${user!.email}",
-                          fontSize: 18,
-                          color: ColorConstants.black,
-                        ),
+                  AppText(
+                    text: "Name : ${userModel!.name}",
+                    fontSize: 18,
+                    color: ColorConstants.black,
+                  ),
+                  AppText(
+                    text: "Email : ${userModel!.email}",
+                    fontSize: 18,
+                    color: ColorConstants.black,
+                  ),
+                  AppText(
+                    text: "phone number : ${userModel!.phoneNumber}",
+                    fontSize: 18,
+                    color: ColorConstants.black,
+                  ),
+                  AppText(
+                    text: "birthdate : ${userModel!.birthdate}",
+                    fontSize: 18,
+                    color: ColorConstants.black,
+                  ),
+                  AppText(
+                    text: "gender : ${userModel!.gender}",
+                    fontSize: 18,
+                    color: ColorConstants.black,
+                  ),
                   (user!.photoURL == null)
                       ? AppButton(
                           ontap: () {
                             AuthService()
                                 .signOutWithEmailPassword(widget.tabController);
 
-                            appSnackBar(context, text: "log out successfully!");
+                            appSnackBar(context, text: "Log out successfully!");
                           },
                           text: StringConstants.logoutButtonText,
                         )
@@ -85,7 +104,7 @@ class _SingleUserState extends State<SingleUser> {
                           ontap: () {
                             AuthService()
                                 .signOutWithGoogle(widget.tabController);
-                            appSnackBar(context, text: "log out successfully!");
+                            appSnackBar(context, text: "Log out successfully!");
                           },
                           text: StringConstants.logoutGoogleButtonText,
                         )

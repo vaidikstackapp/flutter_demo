@@ -16,6 +16,21 @@ class UserService {
     }
   }
 
+  Future<UserModel?> getCurrentUser({String? id}) async {
+    try {
+      DocumentSnapshot doc = await userCollection.doc(id!).get();
+
+      print("getCurrentUser=============>${doc}");
+
+      return UserModel.fromJson(doc.data() as Map<String, dynamic>);
+    } on FirebaseException catch (e) {
+      if (kDebugMode) {
+        print("Catch Exception in getCurrentUser============>${e.message}");
+      }
+      return null;
+    }
+  }
+
   Future<void> deleteUser(String id) async {
     try {
       await userCollection.doc(id).delete();
