@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_demo/common/constants/string_constsnt.dart';
 import 'package:flutter_demo/common/widget/app_button.dart';
@@ -41,7 +42,9 @@ class _SingleUserState extends State<SingleUser> {
     user = auth.currentUser;
     if (user != null) {
       userModel = await userService.getCurrentUser(id: user!.uid);
-      print("userModel===============>${userModel!.toJson()}");
+      if (kDebugMode) {
+        print("userModel===============>${userModel!.toJson()}");
+      }
     }
     statusCheck = true;
     setState(() {});

@@ -1,7 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_demo/common/utills/shared_preferance.dart';
 import 'package:flutter_demo/service/user_service.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -106,8 +105,10 @@ class AuthService {
       ));
       final credential = await auth.signInWithEmailAndPassword(
           email: email!, password: password!);
-      print(
-          "signInWithEmailPassword credential======================>${credential.user}");
+      if (kDebugMode) {
+        print(
+            "signInWithEmailPassword credential======================>${credential.user}");
+      }
 
       if (credential.user != null) {
         tabController!.animateTo(tabController.index + 2);
@@ -115,7 +116,9 @@ class AuthService {
       EasyLoading.dismiss();
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
-        print('No user found for that email.');
+        if (kDebugMode) {
+          print('No user found for that email.');
+        }
         Fluttertoast.showToast(
             msg: "No user found for that email",
             toastLength: Toast.LENGTH_SHORT,

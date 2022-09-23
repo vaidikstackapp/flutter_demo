@@ -20,7 +20,9 @@ class UserService {
     try {
       DocumentSnapshot doc = await userCollection.doc(id!).get();
 
-      print("getCurrentUser=============>${doc}");
+      if (kDebugMode) {
+        print("getCurrentUser=============>$doc");
+      }
 
       return UserModel.fromJson(doc.data() as Map<String, dynamic>);
     } on FirebaseException catch (e) {
