@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_demo/common/constants/string_constsnt.dart';
 import 'package:flutter_demo/common/widget/app_button.dart';
+import 'package:flutter_demo/common/widget/app_snackbar.dart';
 import 'package:flutter_demo/common/widget/app_text.dart';
 import 'package:flutter_demo/service/auth_serivce.dart';
 import 'package:flutter_demo/service/user_service.dart';
@@ -60,23 +61,23 @@ class _SingleUserState extends State<SingleUser> {
                           backgroundImage: NetworkImage('${user!.photoURL}'),
                         ),
                   (user!.email == null)
-                      ? const AppText(
+                      ? AppText(
                           text: "Email : No email found",
                           fontSize: 18,
-                          color: Colors.black,
+                          color: ColorConstants.black,
                         )
                       : AppText(
                           text: "Email : ${user!.email}",
                           fontSize: 18,
-                          color: Colors.black,
+                          color: ColorConstants.black,
                         ),
                   (user!.photoURL == null)
                       ? AppButton(
                           ontap: () {
                             AuthService()
                                 .signOutWithEmailPassword(widget.tabController);
-                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                                content: Text(StringConstants.snackBarText)));
+
+                            appSnackBar(context, text: "log out successfully!");
                           },
                           text: StringConstants.logoutButtonText,
                         )
@@ -84,8 +85,7 @@ class _SingleUserState extends State<SingleUser> {
                           ontap: () {
                             AuthService()
                                 .signOutWithGoogle(widget.tabController);
-                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                                content: Text(StringConstants.snackBarText)));
+                            appSnackBar(context, text: "log out successfully!");
                           },
                           text: StringConstants.logoutGoogleButtonText,
                         )

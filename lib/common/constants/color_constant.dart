@@ -5,4 +5,5 @@ class ColorConstants {
   static Color textColor = Colors.white;
   static Color errorColor = Colors.red;
   static Color borderColor = Colors.black26;
+  static Color black = Colors.black54;
 }

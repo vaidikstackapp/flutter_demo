@@ -3,6 +3,7 @@ import 'package:flutter_demo/common/widget/app_button.dart';
 import 'package:flutter_demo/common/widget/app_text.dart';
 import 'package:flutter_demo/common/widget/app_textfield.dart';
 import 'package:flutter_demo/service/auth_serivce.dart';
+import 'package:intl/intl.dart';
 import '../common/constants/color_constant.dart';
 import '../common/constants/string_constsnt.dart';
 import '../service/user_service.dart';
@@ -19,8 +20,12 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   TextEditingController tEmail = TextEditingController();
+  TextEditingController emailController = TextEditingController();
   TextEditingController tPassword = TextEditingController();
-  TextEditingController tUsername = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+  TextEditingController contactController = TextEditingController();
+  TextEditingController conformPasswordController = TextEditingController();
+  TextEditingController userNameController = TextEditingController();
   TextEditingController datePickerController = TextEditingController();
   bool check = false;
   UserService userService = UserService();
@@ -28,8 +33,11 @@ class _LoginPageState extends State<LoginPage> {
   final _signUp = GlobalKey<FormState>();
 
   bool visible = true;
+  bool visible1 = true;
+  bool visible2 = true;
   bool isAdmin = false;
   bool signUp = false;
+  bool gender = false;
 
   @override
   Widget build(BuildContext context) {
@@ -47,60 +55,194 @@ class _LoginPageState extends State<LoginPage> {
                     physics: const BouncingScrollPhysics(),
                     shrinkWrap: true,
                     children: [
-                      const AppText(
+                      AppText(
                         textAlign: TextAlign.center,
                         text: "Sign Up Now",
-                        color: Colors.black,
+                        color: ColorConstants.black,
                         fontSize: 20,
                       ),
-                      const AppText(
+                      AppText(
                         textAlign: TextAlign.center,
                         text: "Please fill the details and create account",
-                        color: Colors.black54,
+                        color: ColorConstants.black,
                       ),
                       const SizedBox(
                         height: 20,
                       ),
-                      const AppTextField(
+                      AppTextField(
                         lable: 'Name',
+                        textEditingController: userNameController,
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return "Enter name";
+                          }
+                          return null;
+                        },
                       ),
-                      const AppTextField(
-                        lable: 'Email',
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          AppText(
+                            text: "Gender :",
+                            color: ColorConstants.black,
+                          ),
+                          Radio(
+                            value: true,
+                            groupValue: gender,
+                            onChanged: (value) {
+                              gender = !gender;
+                              setState(() {});
+                            },
+                          ),
+                          AppText(
+                            text: "Male",
+                            color: ColorConstants.black,
+                          ),
+                          Radio(
+                            value: false,
+                            groupValue: gender,
+                            onChanged: (value) {
+                              gender = !gender;
+                              setState(() {});
+                            },
+                          ),
+                          AppText(
+                            text: "Female",
+                            color: ColorConstants.black,
+                          ),
+                        ],
                       ),
-                      const AppTextField(
-                        lable: 'Phone Number',
+                      AppTextField(
+                        textEditingController: emailController,
+                        lable: StringConstants.email,
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return StringConstants.isEmailEmpty;
+                          } else if (!StringConstants.emailPatten
+                              .hasMatch(value)) {
+                            return StringConstants.isEmailNotMatch;
+                          }
+                          return null;
+                        },
+                      ),
+                      AppTextField(
+                        textEditingController: contactController,
+                        textInputType: TextInputType.phone,
+                        lable: StringConstants.phoneNumber,
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return "Enter phone number";
+                          } else if (!StringConstants.phonePatten
+                              .hasMatch(value)) {
+                            return "Enter correct phone number";
+                          }
+                          return null;
+                        },
                       ),
                       AppTextField(
                         textEditingController: datePickerController,
                         readonly: true,
                         lable: 'Birthdate',
-                        // suffixIcon: GestureDetector(
-                        //     onTap: () async {
-                        //       DateTime? pickDate = await showDatePicker(
-                        //           context: context,
-                        //           initialDate: DateTime.now(),
-                        //           firstDate: DateTime(1995),
-                        //           lastDate: DateTime(2022));
-                        //       if (pickDate != null) {
-                        //         datePickerController.text =
-                        //             "${pickDate.day} : ${pickDate.month.toString()} : ${pickDate.year}";
-                        //       }
-                        //       setState(() {});
-                        //     },
-                        //     child: Icon(
-                        //       Icons.calendar_today,
-                        //       color: ColorConstants.commonColor,
-                        //     )),
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return "Select birth date";
+                          }
+                          return null;
+                        },
+                        suffixIcon: GestureDetector(
+                            onTap: () async {
+                              DateTime? pickDate = await showDatePicker(
+                                context: context,
+                                initialDate: DateTime.now(),
+                                firstDate: DateTime(1995),
+                                lastDate: DateTime.now(),
+                                builder: (context, child) {
+                                  return Theme(
+                                      data: Theme.of(context).copyWith(
+                                          colorScheme: ColorScheme.light(
+                                              primary:
+                                                  ColorConstants.commonColor)),
+                                      child: child!);
+                                },
+                              );
+                              if (pickDate != null) {
+                                datePickerController.text =
+                                    "${pickDate.day} ${DateFormat.yMMM().format(pickDate)}";
+                              }
+                              setState(() {});
+                            },
+                            child: Icon(
+                              Icons.calendar_today,
+                              color: ColorConstants.commonColor,
+                            )),
                       ),
-                      const AppTextField(
-                        lable: 'Password',
+                      AppTextField(
+                        textEditingController: passwordController,
+                        obscureText: visible1,
+                        suffixIcon: GestureDetector(
+                            onTap: () {
+                              visible1 = !visible1;
+                              setState(() {});
+                            },
+                            child: (visible1)
+                                ? Icon(
+                                    Icons.visibility_off,
+                                    size: 18,
+                                    color: ColorConstants.commonColor,
+                                  )
+                                : Icon(
+                                    Icons.visibility,
+                                    size: 18,
+                                    color: ColorConstants.commonColor,
+                                  )),
+                        lable: "Password",
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return StringConstants.isPasswordEmpty;
+                          } else if (!StringConstants.passPatten
+                              .hasMatch(value)) {
+                            return StringConstants.isPasswordNotMatch;
+                          }
+                          return null;
+                        },
                       ),
-                      const AppTextField(
-                        lable: 'Conform password ',
+                      AppTextField(
+                        textEditingController: conformPasswordController,
+                        obscureText: visible2,
+                        suffixIcon: GestureDetector(
+                            onTap: () {
+                              visible2 = !visible2;
+                              setState(() {});
+                            },
+                            child: (visible2)
+                                ? Icon(
+                                    Icons.visibility_off,
+                                    size: 18,
+                                    color: ColorConstants.commonColor,
+                                  )
+                                : Icon(
+                                    Icons.visibility,
+                                    size: 18,
+                                    color: ColorConstants.commonColor,
+                                  )),
+                        lable: "Conform password",
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return StringConstants.isPasswordEmpty;
+                          } else if (passwordController.text != value) {
+                            return 'Enter correct password';
+                          }
+                          return null;
+                        },
                       ),
                       AppButton(
                         ontap: () {
-                          signUp = false;
+                          FocusManager.instance.primaryFocus?.unfocus();
+                          if (_signUp.currentState!.validate()) {
+                            signUp = false;
+
+                            userNameController.clear();
+                          }
                           setState(() {});
                         },
                         text: 'sign up',
@@ -124,17 +266,17 @@ class _LoginPageState extends State<LoginPage> {
                     physics: const BouncingScrollPhysics(),
                     shrinkWrap: true,
                     children: [
-                      const AppText(
+                      AppText(
                         text: "Log In Now",
-                        color: Colors.black,
+                        color: ColorConstants.black,
                         textAlign: TextAlign.center,
                         fontSize: 25,
                       ),
                       Container(
                         margin: const EdgeInsets.symmetric(vertical: 10),
-                        child: const AppText(
+                        child: AppText(
                             text: "please login to continue using our app",
-                            color: Colors.black54,
+                            color: ColorConstants.black,
                             textAlign: TextAlign.center),
                       ),
                       const SizedBox(
@@ -186,7 +328,7 @@ class _LoginPageState extends State<LoginPage> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          const AppText(text: "Type :", color: Colors.black),
+                          AppText(text: "Type :", color: ColorConstants.black),
                           Radio(
                             value: false,
                             groupValue: isAdmin,
@@ -195,9 +337,9 @@ class _LoginPageState extends State<LoginPage> {
                               setState(() {});
                             },
                           ),
-                          const AppText(
+                          AppText(
                             text: "User",
-                            color: Colors.black,
+                            color: ColorConstants.black,
                           ),
                           Radio(
                             value: true,
@@ -207,7 +349,7 @@ class _LoginPageState extends State<LoginPage> {
                               setState(() {});
                             },
                           ),
-                          const AppText(text: "Admin", color: Colors.black),
+                          AppText(text: "Admin", color: ColorConstants.black),
                         ],
                       ),
                       AppButton(
@@ -215,8 +357,8 @@ class _LoginPageState extends State<LoginPage> {
                         ontap: () {
                           FocusManager.instance.primaryFocus?.unfocus();
                           if (_loginKey.currentState!.validate()) {
-                            AuthService().authentication(tEmail, tPassword,
-                                isAdmin, widget.tabController);
+                            AuthService().signInWithEmailPassword(tEmail,
+                                tPassword, isAdmin, widget.tabController);
                           }
                         },
                       ),
@@ -267,9 +409,9 @@ class _LoginPageState extends State<LoginPage> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              const AppText(
+                              AppText(
                                 textAlign: TextAlign.center,
-                                color: Colors.black,
+                                color: ColorConstants.black,
                                 text: "Don't have and account? ",
                               ),
                               AppText(

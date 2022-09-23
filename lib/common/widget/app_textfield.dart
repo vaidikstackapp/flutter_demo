@@ -8,12 +8,14 @@ class AppTextField extends StatelessWidget {
   final Widget? suffixIcon;
   final bool? obscureText;
   final bool? readonly;
+  final TextInputType? textInputType;
   final TextEditingController? textEditingController;
   final FormFieldValidator<String>? validator;
 
   const AppTextField(
       {super.key,
       this.lable,
+      this.textInputType,
       this.validator,
       this.suffixIcon,
       this.readonly,
@@ -25,6 +27,7 @@ class AppTextField extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: TextFormField(
+        keyboardType: textInputType,
         readOnly: readonly ?? false,
         controller: textEditingController,
         validator: validator,

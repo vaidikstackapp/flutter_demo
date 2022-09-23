@@ -14,13 +14,13 @@ class AuthService {
   UserService userService = UserService();
   GoogleSignIn googleSignIn = GoogleSignIn();
   FirebaseAuth auth = FirebaseAuth.instance;
-  void authentication(
+  void signInWithEmailPassword(
       TextEditingController tEmail,
       TextEditingController tPassword,
       bool isAdmin,
       TabController tabController) async {
     String s = '';
-    String admin = '';
+    // String admin = '';
     String email = tEmail.text;
     String password = tPassword.text;
     if (kDebugMode) {
@@ -28,9 +28,9 @@ class AuthService {
     }
 
     if (isAdmin) {
-      admin = 'True';
+      // admin = 'True';
     } else {
-      admin = 'False';
+      // admin = 'False';
     }
     try {
       EasyLoading.show(
@@ -44,12 +44,12 @@ class AuthService {
       if (credential.user != null) {
         User? user = credential.user;
         UserModel userModel = UserModel(
-            email: user!.email,
-            name: user.displayName ?? "",
-            phoneNumber: user.phoneNumber ?? "",
-            profileImage: user.photoURL ?? "",
-            uid: user.uid,
-            admin: admin);
+          email: user!.email,
+          name: user.displayName ?? "",
+          phoneNumber: user.phoneNumber ?? "",
+          profileImage: user.photoURL ?? "",
+          uid: user.uid,
+        );
         await userService.createUser(userModel);
       }
       EasyLoading.dismiss();
@@ -100,11 +100,11 @@ class AuthService {
 
   Future<UserCredential> signInWithGoogle(
       TabController tabController, bool isAdmin) async {
-    String admin = '';
+    //String admin = '';
     if (isAdmin) {
-      admin = 'True';
+      // admin = 'True';
     } else {
-      admin = 'False';
+      // admin = 'False';
     }
 
     // Trigger the authentication flow
@@ -126,7 +126,6 @@ class AuthService {
           profileImage: user.photoUrl ?? "",
           name: user.displayName,
           email: user.email,
-          admin: admin,
           phoneNumber: '');
       await userService.createUser(userModel);
     }
@@ -148,17 +147,5 @@ class AuthService {
   signOutWithEmailPassword(TabController? tabController) async {
     await auth.signOut();
     tabController!.animateTo(tabController.index - 2);
-  }
-
-  phoneAuthentication() async {
-    await FirebaseAuth.instance.verifyPhoneNumber(
-      phoneNumber: '+918154054412',
-      verificationCompleted: (phoneAuthCredential) {
-        //print("verificationCompleted===============>${credential}");
-      },
-      verificationFailed: (FirebaseException e) {},
-      codeSent: (verificationId, forceResendingToken) {},
-      codeAutoRetrievalTimeout: (verificationId) {},
-    );
   }
 }
