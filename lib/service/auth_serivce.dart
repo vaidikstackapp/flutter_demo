@@ -12,7 +12,9 @@ import '../model/user_model.dart';
 class AuthService {
   UserService userService = UserService();
   GoogleSignIn googleSignIn = GoogleSignIn();
-  FirebaseAuth auth = FirebaseAuth.instance;
+  FirebaseAuth? auth = FirebaseAuth.instance;
+
+  // ===================signUpWithEmailPassword=================//
 
   void signUpWithEmailPassword(
       {String? email,
@@ -32,7 +34,7 @@ class AuthService {
           indicator: SpinKitCircle(
         color: ColorConstants.commonColor,
       ));
-      final credential = await auth.createUserWithEmailAndPassword(
+      final credential = await auth!.createUserWithEmailAndPassword(
         email: email!,
         password: password!,
       );
@@ -76,42 +78,36 @@ class AuthService {
       }
     }
     EasyLoading.dismiss();
-    // if (s == 'network-request-failed') {
-    //   Fluttertoast.showToast(
-    //       msg: "network require",
-    //       toastLength: Toast.LENGTH_SHORT,
-    //       gravity: ToastGravity.CENTER,
-    //       timeInSecForIosWeb: 1,
-    //       backgroundColor: ColorConstants.errorColor,
-    //       textColor: ColorConstants.textColor,
-    //       fontSize: 16.0);
-    // } else if (s != 'email-already-in-use') {
-    //   setPrefBoolValue(isLogin, true);
-    //   if (isAdmin) {
-    //     tabController.animateTo(tabController.index + 1);
-    //   } else {
-    //     tabController.animateTo(tabController.index + 2);
-    //   }
-    // }
   }
+
+  // ===================signInWithEmailPassword=================//
 
   Future<void> signInWithEmailPassword(
       TextEditingController tEmail, TextEditingController tPassword,
-      {TabController? tabController, String? email, String? password}) async {
+      {TabController? tabController,
+      String? email,
+      String? password,
+      bool? admin}) async {
     try {
       EasyLoading.show(
           indicator: SpinKitCircle(
         color: ColorConstants.commonColor,
       ));
-      final credential = await auth.signInWithEmailAndPassword(
-          email: email!, password: password!);
+      final credential = await auth!
+          .signInWithEmailAndPassword(email: email!, password: password!);
       if (kDebugMode) {
         print(
             "signInWithEmailPassword credential======================>${credential.user}");
       }
 
       if (credential.user != null) {
+        print("admin===============>${admin}");
+        // if (admin!) {
+        //   tabController!.animateTo(tabController.index + 2);
+        // }
+        // else {
         tabController!.animateTo(tabController.index + 2);
+        //}
       }
       EasyLoading.dismiss();
     } on FirebaseAuthException catch (e) {
@@ -142,45 +138,43 @@ class AuthService {
     EasyLoading.dismiss();
   }
 
+  // ===================signInWithGoogle=================//
+
   Future<UserCredential> signInWithGoogle(
       TabController tabController, bool isAdmin) async {
-    //String admin = '';
-    if (isAdmin) {
-      // admin = 'True';
-    } else {
-      // admin = 'False';
-    }
-
     // Trigger the authentication flow
-    final GoogleSignInAccount? googleUser = await googleSignIn.signIn();
+    final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
 
-    // Obtain the auth details from the request
-    final GoogleSignInAuthentication googleAuth =
-        await googleUser!.authentication;
+    final GoogleSignInAuthentication? googleAuth =
+        await googleUser?.authentication;
 
-    // Create a new credential
     final credential = GoogleAuthProvider.credential(
-      accessToken: googleAuth.accessToken,
-      idToken: googleAuth.idToken,
+      accessToken: googleAuth?.accessToken,
+      idToken: googleAuth?.idToken,
     );
-    GoogleSignInAccount user = googleUser;
-    if (user.toString().isNotEmpty) {
+
+    // print("idToken --> ${auth.currentUser!.uid}");
+    if (googleUser != null && auth!.currentUser != null) {
+      // print("google User===================>${googleUser.id}");
       UserModel userModel = UserModel(
-          uid: user.id,
-          profileImage: user.photoUrl ?? "",
-          name: user.displayName,
-          email: user.email,
-          phoneNumber: '');
-      await userService.createUser(userModel);
+        phoneNumber: '',
+        birthdate: '',
+        name: googleUser.displayName,
+        email: googleUser.email,
+        uid: auth!.currentUser!.uid,
+        gender: '',
+        profileImage: googleUser.photoUrl,
+      );
+      UserService().createUser(userModel);
+      if (isAdmin) {
+        tabController.animateTo(tabController.index + 1);
+      } else {
+        tabController.animateTo(tabController.index + 2);
+      }
     }
-    if (isAdmin) {
-      tabController.animateTo(tabController.index + 1);
-    } else {
-      tabController.animateTo(tabController.index + 2);
-    }
-    UserCredential userCredential =
-        await FirebaseAuth.instance.signInWithCredential(credential);
-    return userCredential;
+
+    // Once signed in, return the UserCredential
+    return await FirebaseAuth.instance.signInWithCredential(credential);
   }
 
   signOutWithGoogle(TabController? tabController) {
@@ -188,8 +182,10 @@ class AuthService {
     tabController!.animateTo(tabController.index - 2);
   }
 
+  // ===================signOutWithEmailPassword=================//
+
   signOutWithEmailPassword(TabController? tabController) async {
-    await auth.signOut();
+    await auth!.signOut();
     tabController!.animateTo(tabController.index - 2);
   }
 }

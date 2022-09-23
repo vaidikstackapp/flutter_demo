@@ -38,6 +38,7 @@ class _LoginPageState extends State<LoginPage> {
   bool isAdmin = false;
   bool signUp = false;
   bool gender = true;
+  String admin = 'User';
 
   AuthService service = AuthService();
 
@@ -246,16 +247,6 @@ class _LoginPageState extends State<LoginPage> {
                           FocusManager.instance.primaryFocus?.unfocus();
                           if (_signUp.currentState!.validate()) {
                             genderStore = "Male";
-                            // signUp = false;
-                            // visible1 = true;
-                            // visible2 = true;
-                            // gender = true;
-                            // userNameController.clear();
-                            // emailController.clear();
-                            // contactController.clear();
-                            // datePickerController.clear();
-                            // passwordController.clear();
-                            // conformPasswordController.clear();
 
                             String name = userNameController.text;
                             String email = emailController.text;
@@ -271,6 +262,16 @@ class _LoginPageState extends State<LoginPage> {
                                 tabController: widget.tabController,
                                 birthdate: birthdate,
                                 phoneNumber: phoneNumber);
+
+                            visible1 = true;
+                            visible2 = true;
+                            gender = true;
+                            userNameController.clear();
+                            emailController.clear();
+                            contactController.clear();
+                            datePickerController.clear();
+                            passwordController.clear();
+                            conformPasswordController.clear();
                             signUp = false;
                           }
                           setState(() {});
@@ -281,6 +282,23 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 ),
               ),
+            ),
+            floatingActionButton: FloatingActionButton(
+              backgroundColor: ColorConstants.commonColor,
+              onPressed: () {
+                visible1 = true;
+                visible2 = true;
+                gender = true;
+                userNameController.clear();
+                emailController.clear();
+                contactController.clear();
+                datePickerController.clear();
+                passwordController.clear();
+                conformPasswordController.clear();
+                signUp = false;
+                setState(() {});
+              },
+              child: const Icon(Icons.navigate_before),
             ),
           )
         : Scaffold(
@@ -358,6 +376,7 @@ class _LoginPageState extends State<LoginPage> {
                             groupValue: isAdmin,
                             onChanged: (value) {
                               isAdmin = !isAdmin;
+                              admin = "User";
                               setState(() {});
                             },
                           ),
@@ -370,6 +389,7 @@ class _LoginPageState extends State<LoginPage> {
                             groupValue: isAdmin,
                             onChanged: (value) {
                               isAdmin = !isAdmin;
+                              admin = "Admin";
                               setState(() {});
                             },
                           ),
@@ -380,20 +400,23 @@ class _LoginPageState extends State<LoginPage> {
                         text: 'sign in',
                         ontap: () {
                           FocusManager.instance.primaryFocus?.unfocus();
+                          //  print("Admin==========>$isAdmin");
                           if (_loginKey.currentState!.validate()) {
                             String email = tEmail.text;
                             String password = tPassword.text;
                             service.signInWithEmailPassword(tEmail, tPassword,
                                 tabController: widget.tabController,
                                 email: email,
+                                admin: isAdmin,
                                 password: password);
                           }
                         },
                       ),
                       GestureDetector(
                         onTap: () async {
-                          AuthService()
-                              .signInWithGoogle(widget.tabController, isAdmin);
+                          service.signInWithGoogle(
+                              widget.tabController, isAdmin);
+                          // widget.tabController, isAdmin);
                         },
                         child: Container(
                           height: 40,
