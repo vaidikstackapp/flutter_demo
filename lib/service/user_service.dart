@@ -39,14 +39,15 @@ class UserService {
 
 //-------------------------------Get current user------------------------------------------//
   Future<UserModel?> getCurrentUser({String? id}) async {
+    UserModel? userModel;
+    print("getCurrentUser id---------->$id");
     try {
-      DocumentSnapshot doc = await userCollection.doc(id!).get();
+      DocumentSnapshot? doc = await userCollection.doc(id).get();
 
-      if (kDebugMode) {
-        print("getCurrentUse--------->$doc");
+      if (doc.data() != null) {
+        userModel = UserModel.fromJson(doc.data() as Map<String, dynamic>);
       }
-
-      return UserModel.fromJson(doc.data() as Map<String, dynamic>);
+      return userModel;
     } on FirebaseException catch (e) {
       if (kDebugMode) {
         print("Catch Exception in getCurrentUser : ${e.message}");
@@ -63,6 +64,14 @@ class UserService {
       if (kDebugMode) {
         print("Catch Exception in deleteUser : ${e.message}");
       }
+    }
+  }
+
+  Future<void> upDateData() async {
+    try {
+      //await userCollection.doc('uggI1y2vX3PWG3Q1uEYI9WJD78h2').update();
+    } on FirebaseException catch (e) {
+      print("Catch exception upDateData-------->${e.code}");
     }
   }
 }

@@ -28,6 +28,7 @@ class _SingleUserState extends State<SingleUser> {
   User? user;
   UserService userService = UserService();
   bool statusCheck = false;
+  FirebaseAuth auth = FirebaseAuth.instance;
 
   TextEditingController nameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
@@ -44,24 +45,21 @@ class _SingleUserState extends State<SingleUser> {
   UserModel? userModel;
 
   Future<void> getCurrentUser() async {
-    FirebaseAuth auth = FirebaseAuth.instance;
-    user = auth.currentUser;
-    if (user != null) {
-      userModel = await userService.getCurrentUser(id: user!.uid);
-      if (kDebugMode) {
-        print("userModel===============>${userModel!.toJson()}");
-      }
-
-      nameController.text = userModel!.name!;
-      emailController.text = userModel!.email!;
-      contactController.text = userModel!.phoneNumber!;
-      birthdateController.text = userModel!.birthdate!;
-      genderController.text = userModel!.gender!;
+    print("uid------------>${auth.currentUser}");
+    if (auth.currentUser!.uid.isNotEmpty) {
+      userModel = await userService.getCurrentUser(id: auth.currentUser!.uid);
     }
-    user!.reload();
+    //auth.currentUser!.reload();
+    nameController.text = userModel!.name!;
+    emailController.text = userModel!.email!;
+    contactController.text = userModel!.phoneNumber!;
+    birthdateController.text = userModel!.birthdate!;
+    genderController.text = userModel!.gender!;
     statusCheck = true;
     setState(() {});
   }
+
+  bool readonly = true;
 
   @override
   Widget build(BuildContext context) {
@@ -84,7 +82,7 @@ class _SingleUserState extends State<SingleUser> {
                       fontSize: 20,
                       color: ColorConstants.black,
                     ),
-                    (user?.photoURL == null)
+                    (userModel!.profileImage != null)
                         ? Container(
                             height: 100,
                             width: 100,
@@ -114,35 +112,54 @@ class _SingleUserState extends State<SingleUser> {
                                 )),
                           ),
                     AppTextField(
-                        readonly: true,
+                        readonly: readonly,
                         lable: "Name",
                         textEditingController: nameController),
                     if (userModel!.email != null &&
                         userModel!.email!.isNotEmpty)
                       AppTextField(
-                          readonly: true,
+                          readonly: readonly,
                           lable: "Email",
                           textEditingController: emailController),
                     if (userModel!.phoneNumber != null &&
                         userModel!.phoneNumber!.isNotEmpty)
                       AppTextField(
-                          readonly: true,
+                          readonly: readonly,
                           lable: "contact",
                           textEditingController: contactController),
                     if (userModel!.birthdate != null &&
                         userModel!.birthdate!.isNotEmpty)
                       AppTextField(
-                          readonly: true,
+                          readonly: readonly,
                           lable: "Birth date",
                           textEditingController: birthdateController),
                     if (userModel!.gender != null &&
                         userModel!.gender!.isNotEmpty)
                       AppTextField(
-                        readonly: true,
+                        readonly: readonly,
                         lable: "Gender",
                         textEditingController: genderController,
                       ),
-                    (user!.photoURL == null)
+                    (readonly)
+                        ? AppButton(
+                            text: "Edit",
+                            ontap: () {
+                              readonly = false;
+                              setState(() {});
+                            },
+                          )
+                        : AppButton(
+                            text: "Update",
+                            ontap: () {
+                              String name = nameController.text;
+                              // String name = nameController.text;
+                              //String name = nameController.text;
+
+                              readonly = true;
+                              setState(() {});
+                            },
+                          ),
+                    (userModel!.profileImage != null)
                         ? AppButton(
                             ontap: () {
                               AuthService().signOutWithEmailPassword(
@@ -161,7 +178,7 @@ class _SingleUserState extends State<SingleUser> {
                                   text: "Log out successfully!");
                             },
                             text: StringConstants.logoutGoogleButtonText,
-                          )
+                          ),
                   ],
                 ),
               ),

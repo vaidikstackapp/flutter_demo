@@ -95,12 +95,11 @@ class AuthService {
       final credential = await auth!
           .signInWithEmailAndPassword(email: email!, password: password!);
       if (kDebugMode) {
-        print(
-            "signInWithEmailPassword credential======================>${credential.user}");
+        print("signInWithEmailPassword credential----->${credential.user}");
       }
 
       if (credential.user != null) {
-        print("admin===============>$admin");
+        print("admin----------->$admin");
         if (admin!) {
           tabController!.animateTo(tabController.index + 1);
         } else {
@@ -155,28 +154,29 @@ class AuthService {
     // Future<List<UserModel>?> list = userService.getAllUser();
 
     List<UserModel?>? l = await userService.getAllUser();
-
-    l!.firstWhere((element) => element!.uid != auth!.currentUser!.uid);
-
-    print("list---------------->$l");
-
-    UserModel userModel = UserModel(
-      phoneNumber: '',
-      birthdate: '',
-      name: googleUser!.displayName,
-      email: googleUser.email,
-      uid: auth!.currentUser!.uid,
-      gender: '',
-      profileImage: googleUser.photoUrl,
-    );
-    UserService().createUser(userModel);
+    if (l != null && auth!.currentUser != null) {
+      UserModel? userModel = l.firstWhere(
+        (element) => element!.uid != auth!.currentUser!.uid,
+        orElse: () => UserModel(),
+      );
+      // UserModel userModel = UserModel(
+      //   phoneNumber: '',
+      //   birthdate: '',
+      //   name: googleUser!.displayName ?? "",
+      //   email: googleUser.email,
+      //   uid: auth!.currentUser!.uid,
+      //   gender: '',
+      //   profileImage: googleUser.photoUrl,
+      // );
+      UserService().createUser(userModel!);
+    }
     if (isAdmin) {
       tabController.animateTo(tabController.index + 1);
     } else {
       tabController.animateTo(tabController.index + 2);
     }
-    print("helo--------------------->");
-
+    //
+    // print("list---------------->$tmp");
     // Once signed in, return the UserCredential
     return await FirebaseAuth.instance.signInWithCredential(credential);
   }
