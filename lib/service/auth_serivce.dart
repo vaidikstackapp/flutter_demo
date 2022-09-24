@@ -95,12 +95,11 @@ class AuthService {
       final credential = await auth!
           .signInWithEmailAndPassword(email: email!, password: password!);
       if (kDebugMode) {
-        print(
-            "signInWithEmailPassword credential======================>${credential.user}");
+        print("signInWithEmailPassword credential----->${credential.user}");
       }
 
       if (credential.user != null) {
-        print("admin===============>$admin");
+        print("admin----------->$admin");
         if (admin!) {
           tabController!.animateTo(tabController.index + 1);
         } else {
@@ -156,7 +155,8 @@ class AuthService {
 
     List<UserModel?>? l = await userService.getAllUser();
 
-    l!.firstWhere((element) => element!.uid != auth!.currentUser!.uid);
+    var tmp =
+        l!.firstWhere((element) => element!.uid != auth!.currentUser!.uid);
 
     print("list---------------->$l");
 
