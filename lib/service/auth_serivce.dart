@@ -154,6 +154,7 @@ class AuthService {
     // Future<List<UserModel>?> list = userService.getAllUser();
 
     List<UserModel?>? l = await userService.getAllUser();
+<<<<<<< HEAD
     if (l != null && auth!.currentUser != null) {
       UserModel? userModel = l.firstWhere(
         (element) => element!.uid != auth!.currentUser!.uid,
@@ -170,6 +171,24 @@ class AuthService {
       // );
       UserService().createUser(userModel!);
     }
+=======
+
+    var tmp =
+        l!.firstWhere((element) => element!.uid != auth!.currentUser!.uid);
+
+    print("list---------------->$l");
+
+    UserModel userModel = UserModel(
+      phoneNumber: '',
+      birthdate: '',
+      name: googleUser!.displayName,
+      email: googleUser.email,
+      uid: auth!.currentUser!.uid,
+      gender: '',
+      profileImage: googleUser.photoUrl,
+    );
+    UserService().createUser(userModel);
+>>>>>>> a699b57b66bbcf1c7557081f9ff636c497611966
     if (isAdmin) {
       tabController.animateTo(tabController.index + 1);
     } else {
