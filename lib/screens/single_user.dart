@@ -11,7 +11,6 @@ import 'package:flutter_demo/service/auth_serivce.dart';
 import 'package:flutter_demo/service/user_service.dart';
 
 import '../common/constants/color_constant.dart';
-import '../common/constants/image_constant.dart';
 
 // ignore: must_be_immutable
 class SingleUser extends StatefulWidget {
@@ -48,7 +47,7 @@ class _SingleUserState extends State<SingleUser> {
     FirebaseAuth auth = FirebaseAuth.instance;
     user = auth.currentUser;
     if (user != null) {
-      userModel = await userService!.getCurrentUser(id: user!.uid);
+      userModel = await userService.getCurrentUser(id: user!.uid);
       if (kDebugMode) {
         print("userModel===============>${userModel!.toJson()}");
       }

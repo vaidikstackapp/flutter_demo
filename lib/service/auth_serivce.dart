@@ -13,7 +13,6 @@ class AuthService {
   UserService userService = UserService();
   GoogleSignIn googleSignIn = GoogleSignIn();
   FirebaseAuth? auth = FirebaseAuth.instance;
-
   // ===================signUpWithEmailPassword=================//
 
   void signUpWithEmailPassword(
@@ -101,13 +100,12 @@ class AuthService {
       }
 
       if (credential.user != null) {
-        print("admin===============>${admin}");
-        // if (admin!) {
-        //   tabController!.animateTo(tabController.index + 2);
-        // }
-        // else {
-        tabController!.animateTo(tabController.index + 2);
-        //}
+        print("admin===============>$admin");
+        if (admin!) {
+          tabController!.animateTo(tabController.index + 1);
+        } else {
+          tabController!.animateTo(tabController.index + 2);
+        }
       }
       EasyLoading.dismiss();
     } on FirebaseAuthException catch (e) {
@@ -153,25 +151,31 @@ class AuthService {
       idToken: googleAuth?.idToken,
     );
 
-    // print("idToken --> ${auth.currentUser!.uid}");
-    if (googleUser != null && auth!.currentUser != null) {
-      // print("google User===================>${googleUser.id}");
-      UserModel userModel = UserModel(
-        phoneNumber: '',
-        birthdate: '',
-        name: googleUser.displayName,
-        email: googleUser.email,
-        uid: auth!.currentUser!.uid,
-        gender: '',
-        profileImage: googleUser.photoUrl,
-      );
-      UserService().createUser(userModel);
-      if (isAdmin) {
-        tabController.animateTo(tabController.index + 1);
-      } else {
-        tabController.animateTo(tabController.index + 2);
-      }
+    //print("idToken --> ${auth!.currentUser!.uid}");
+    // Future<List<UserModel>?> list = userService.getAllUser();
+
+    List<UserModel?>? l = await userService.getAllUser();
+
+    l!.firstWhere((element) => element!.uid != auth!.currentUser!.uid);
+
+    print("list---------------->$l");
+
+    UserModel userModel = UserModel(
+      phoneNumber: '',
+      birthdate: '',
+      name: googleUser!.displayName,
+      email: googleUser.email,
+      uid: auth!.currentUser!.uid,
+      gender: '',
+      profileImage: googleUser.photoUrl,
+    );
+    UserService().createUser(userModel);
+    if (isAdmin) {
+      tabController.animateTo(tabController.index + 1);
+    } else {
+      tabController.animateTo(tabController.index + 2);
     }
+    print("helo--------------------->");
 
     // Once signed in, return the UserCredential
     return await FirebaseAuth.instance.signInWithCredential(credential);
