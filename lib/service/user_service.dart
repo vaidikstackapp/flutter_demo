@@ -1,6 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_demo/common/widget/app_snackbar.dart';
 import 'package:flutter_demo/model/user_model.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class UserService {
   final CollectionReference userCollection =
@@ -39,14 +43,15 @@ class UserService {
 
 //-------------------------------Get current user------------------------------------------//
   Future<UserModel?> getCurrentUser({String? id}) async {
+    UserModel? userModel;
+    print("getCurrentUser id---------->$id");
     try {
-      DocumentSnapshot doc = await userCollection.doc(id!).get();
+      DocumentSnapshot? doc = await userCollection.doc(id).get();
 
-      if (kDebugMode) {
-        print("getCurrentUse--------->$doc");
+      if (doc.data() != null) {
+        userModel = UserModel.fromJson(doc.data() as Map<String, dynamic>);
       }
-
-      return UserModel.fromJson(doc.data() as Map<String, dynamic>);
+      return userModel;
     } on FirebaseException catch (e) {
       if (kDebugMode) {
         print("Catch Exception in getCurrentUser : ${e.message}");
@@ -63,6 +68,20 @@ class UserService {
       if (kDebugMode) {
         print("Catch Exception in deleteUser : ${e.message}");
       }
+    }
+  }
+
+  Future<void> updateData({String? uid, UserModel? userModel}) async {
+    try {
+      Map<String, dynamic> map = userModel!.toJson();
+      print("userMap------------->$map");
+      await userCollection.doc(uid).update(map);
+      Fluttertoast.showToast(
+          msg: "Update Successfully",
+          backgroundColor: Colors.red,
+          gravity: ToastGravity.CENTER);
+    } on FirebaseException catch (e) {
+      print("Catch exception upDateData-------->${e.code}");
     }
   }
 }

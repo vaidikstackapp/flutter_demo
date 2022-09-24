@@ -39,10 +39,10 @@ dependencies:
 
 
   #firebasse
-  firebase_auth: ^3.9.0
-  firebase_core: ^1.22.0
-  google_sign_in: ^5.4.1
-  cloud_firestore: ^3.4.7
+  firebase_auth: ^3.10.0
+  firebase_core: ^1.23.0
+  google_sign_in: ^5.4.2
+  cloud_firestore: ^3.4.9
 
   #massenger
   fluttertoast: ^8.0.9

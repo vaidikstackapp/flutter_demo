@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -9,6 +11,8 @@ import 'package:flutter_demo/common/widget/app_textfield.dart';
 import 'package:flutter_demo/model/user_model.dart';
 import 'package:flutter_demo/service/auth_serivce.dart';
 import 'package:flutter_demo/service/user_service.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:intl/intl.dart';
 
 import '../common/constants/color_constant.dart';
 
@@ -28,13 +32,15 @@ class _SingleUserState extends State<SingleUser> {
   User? user;
   UserService userService = UserService();
   bool statusCheck = false;
+  FirebaseAuth auth = FirebaseAuth.instance;
 
   TextEditingController nameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   TextEditingController contactController = TextEditingController();
   TextEditingController birthdateController = TextEditingController();
   TextEditingController genderController = TextEditingController();
-
+  bool? checkGender;
+  String gender = '';
   @override
   void initState() {
     super.initState();
@@ -44,24 +50,27 @@ class _SingleUserState extends State<SingleUser> {
   UserModel? userModel;
 
   Future<void> getCurrentUser() async {
-    FirebaseAuth auth = FirebaseAuth.instance;
-    user = auth.currentUser;
-    if (user != null) {
-      userModel = await userService.getCurrentUser(id: user!.uid);
-      if (kDebugMode) {
-        print("userModel===============>${userModel!.toJson()}");
-      }
-
-      nameController.text = userModel!.name!;
-      emailController.text = userModel!.email!;
-      contactController.text = userModel!.phoneNumber!;
-      birthdateController.text = userModel!.birthdate!;
-      genderController.text = userModel!.gender!;
+    print("uid------------>${auth.currentUser}");
+    if (auth.currentUser!.uid.isNotEmpty) {
+      userModel = await userService.getCurrentUser(id: auth.currentUser!.uid);
     }
-    user!.reload();
+    //auth.currentUser!.reload();
+    nameController.text = userModel!.name!;
+    emailController.text = userModel!.email!;
+    contactController.text = userModel!.phoneNumber!;
+    birthdateController.text = userModel!.birthdate!;
+    gender = userModel!.gender!;
+
+    if (gender == 'Male') {
+      checkGender = true;
+    } else {
+      checkGender = false;
+    }
     statusCheck = true;
     setState(() {});
   }
+
+  bool readonly = true;
 
   @override
   Widget build(BuildContext context) {
@@ -84,7 +93,7 @@ class _SingleUserState extends State<SingleUser> {
                       fontSize: 20,
                       color: ColorConstants.black,
                     ),
-                    (user?.photoURL == null)
+                    (userModel!.profileImage != null)
                         ? Container(
                             height: 100,
                             width: 100,
@@ -114,7 +123,7 @@ class _SingleUserState extends State<SingleUser> {
                                 )),
                           ),
                     AppTextField(
-                        readonly: true,
+                        readonly: readonly,
                         lable: "Name",
                         textEditingController: nameController),
                     if (userModel!.email != null &&
@@ -126,23 +135,124 @@ class _SingleUserState extends State<SingleUser> {
                     if (userModel!.phoneNumber != null &&
                         userModel!.phoneNumber!.isNotEmpty)
                       AppTextField(
-                          readonly: true,
+                          readonly: readonly,
                           lable: "contact",
                           textEditingController: contactController),
                     if (userModel!.birthdate != null &&
                         userModel!.birthdate!.isNotEmpty)
                       AppTextField(
-                          readonly: true,
-                          lable: "Birth date",
-                          textEditingController: birthdateController),
+                        textEditingController: birthdateController,
+                        readonly: true,
+                        lable: 'Birthdate',
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return "Select birth date";
+                          }
+                          return null;
+                        },
+                        suffixIcon: GestureDetector(
+                            onTap: () async {
+                              DateTime? pickDate = await showDatePicker(
+                                context: context,
+                                initialDate: DateTime.now(),
+                                firstDate: DateTime(1995),
+                                lastDate: DateTime.now(),
+                                builder: (context, child) {
+                                  return Theme(
+                                      data: Theme.of(context).copyWith(
+                                          colorScheme: ColorScheme.light(
+                                              primary:
+                                                  ColorConstants.commonColor)),
+                                      child: child!);
+                                },
+                              );
+                              if (pickDate != null) {
+                                birthdateController.text =
+                                    "${pickDate.day} ${DateFormat.yMMM().format(pickDate)}";
+                              }
+                              setState(() {});
+                            },
+                            child: Icon(
+                              Icons.calendar_today,
+                              color: ColorConstants.commonColor,
+                            )),
+                      ),
                     if (userModel!.gender != null &&
                         userModel!.gender!.isNotEmpty)
-                      AppTextField(
-                        readonly: true,
-                        lable: "Gender",
-                        textEditingController: genderController,
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          AppText(
+                            text: "Gender :",
+                            color: ColorConstants.black,
+                          ),
+                          Radio(
+                            value: true,
+                            groupValue: checkGender,
+                            onChanged: (value) {
+                              checkGender = !checkGender!;
+                              gender = "Male";
+                              setState(() {});
+                            },
+                          ),
+                          AppText(
+                            text: "Male",
+                            color: ColorConstants.black,
+                          ),
+                          Radio(
+                            value: false,
+                            groupValue: checkGender,
+                            onChanged: (value) {
+                              checkGender = !checkGender!;
+                              gender = "Female";
+                              setState(() {});
+                            },
+                          ),
+                          AppText(
+                            text: "Female",
+                            color: ColorConstants.black,
+                          ),
+                        ],
                       ),
-                    (user!.photoURL == null)
+                    (readonly)
+                        ? AppButton(
+                            text: "Edit",
+                            ontap: () {
+                              readonly = false;
+                              Fluttertoast.showToast(
+                                  msg: "Edit your details",
+                                  gravity: ToastGravity.CENTER,
+                                  backgroundColor: Colors.red);
+                              setState(() {});
+                            },
+                          )
+                        : AppButton(
+                            text: "Update",
+                            ontap: () {
+                              String name = nameController.text;
+                              String email = emailController.text;
+                              String contact = contactController.text;
+                              String birthdate = birthdateController.text;
+
+                              UserModel updateModel = UserModel(
+                                  profileImage: "",
+                                  gender: gender,
+                                  uid: userModel!.uid,
+                                  email: email,
+                                  name: name,
+                                  birthdate: birthdate,
+                                  phoneNumber: contact);
+
+                              print(
+                                  "updateModel------------------->${updateModel.toJson()}");
+                              userService.updateData(
+                                  uid: userModel!.uid, userModel: updateModel);
+                              readonly = true;
+                              //nameController.clear();
+                              setState(() {});
+                            },
+                          ),
+                    (userModel!.profileImage != null)
                         ? AppButton(
                             ontap: () {
                               AuthService().signOutWithEmailPassword(
@@ -161,7 +271,7 @@ class _SingleUserState extends State<SingleUser> {
                                   text: "Log out successfully!");
                             },
                             text: StringConstants.logoutGoogleButtonText,
-                          )
+                          ),
                   ],
                 ),
               ),
