@@ -1,8 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter_demo/common/widget/app_toast.dart';
 import 'package:flutter_demo/model/user_model.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 
 class UserService {
   final CollectionReference userCollection =
@@ -74,10 +73,8 @@ class UserService {
       Map<String, dynamic> map = userModel!.toJson();
       print("userMap------------->$map");
       await userCollection.doc(uid).update(map);
-      Fluttertoast.showToast(
-          msg: "Update Successfully",
-          backgroundColor: Colors.red,
-          gravity: ToastGravity.CENTER);
+
+      appToast('Update Successfully');
     } on FirebaseException catch (e) {
       print("Catch exception upDateData-------->${e.code}");
     }
