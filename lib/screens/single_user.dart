@@ -1,7 +1,4 @@
-import 'dart:ffi';
-
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_demo/common/constants/string_constsnt.dart';
 import 'package:flutter_demo/common/widget/app_button.dart';

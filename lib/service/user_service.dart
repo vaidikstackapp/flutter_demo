@@ -1,8 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_demo/common/widget/app_snackbar.dart';
 import 'package:flutter_demo/model/user_model.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
