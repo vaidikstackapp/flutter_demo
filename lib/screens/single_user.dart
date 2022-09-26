@@ -5,6 +5,7 @@ import 'package:flutter_demo/common/widget/app_button.dart';
 import 'package:flutter_demo/common/widget/app_snackbar.dart';
 import 'package:flutter_demo/common/widget/app_text.dart';
 import 'package:flutter_demo/common/widget/app_textfield.dart';
+import 'package:flutter_demo/common/widget/app_toast.dart';
 import 'package:flutter_demo/model/user_model.dart';
 import 'package:flutter_demo/service/auth_serivce.dart';
 import 'package:flutter_demo/service/user_service.dart';
@@ -216,10 +217,7 @@ class _SingleUserState extends State<SingleUser> {
                             text: "Edit",
                             ontap: () {
                               readonly = false;
-                              Fluttertoast.showToast(
-                                  msg: "Edit your details",
-                                  gravity: ToastGravity.CENTER,
-                                  backgroundColor: Colors.red);
+                              appToast("Edit your details");
                               setState(() {});
                             },
                           )

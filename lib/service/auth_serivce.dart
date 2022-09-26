@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_demo/common/widget/app_toast.dart';
 import 'package:flutter_demo/service/user_service.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -61,14 +62,7 @@ class AuthService {
       }
       if (e.code == 'weak-password') {
       } else if (e.code == 'email-already-in-use') {
-        Fluttertoast.showToast(
-            msg: "The account already exists for that email",
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.CENTER,
-            timeInSecForIosWeb: 1,
-            backgroundColor: ColorConstants.errorColor,
-            textColor: ColorConstants.textColor,
-            fontSize: 16.0);
+        appToast("The account already exists for that email");
       }
       EasyLoading.dismiss();
     } catch (e) {
@@ -112,23 +106,9 @@ class AuthService {
         if (kDebugMode) {
           print('No user found for that email.');
         }
-        Fluttertoast.showToast(
-            msg: "No user found for that email",
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.CENTER,
-            timeInSecForIosWeb: 1,
-            backgroundColor: ColorConstants.errorColor,
-            textColor: ColorConstants.textColor,
-            fontSize: 16.0);
+        appToast("No user found for that email");
       } else if (e.code == 'wrong-password') {
-        Fluttertoast.showToast(
-            msg: "wrong-password",
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.CENTER,
-            timeInSecForIosWeb: 1,
-            backgroundColor: ColorConstants.errorColor,
-            textColor: ColorConstants.textColor,
-            fontSize: 16.0);
+        appToast("wrong-password");
       }
       EasyLoading.dismiss();
     }
