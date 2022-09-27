@@ -9,6 +9,8 @@ class UserService {
 
   //-------------------------------Create User------------------------------------------//
   Future<void> createUser(UserModel userModel) async {
+    print('CREATE USER----------->${userModel.toJson()}');
+
     try {
       await userCollection.doc(userModel.uid).set(userModel.toJson());
     } on FirebaseException catch (e) {
@@ -41,7 +43,7 @@ class UserService {
 //-------------------------------Get current user------------------------------------------//
   Future<UserModel?> getCurrentUser({String? id}) async {
     UserModel? userModel;
-    print("getCurrentUser id---------->$id");
+    // print("getCurrentUser id---------->$id");
     try {
       DocumentSnapshot? doc = await userCollection.doc(id).get();
 

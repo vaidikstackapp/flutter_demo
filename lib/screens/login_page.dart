@@ -3,6 +3,7 @@ import 'package:flutter_demo/common/widget/app_button.dart';
 import 'package:flutter_demo/common/widget/app_text.dart';
 import 'package:flutter_demo/common/widget/app_textfield.dart';
 import 'package:flutter_demo/service/auth_serivce.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:intl/intl.dart';
 import '../common/constants/color_constant.dart';
 import '../common/constants/string_constsnt.dart';
@@ -11,7 +12,6 @@ import '../service/user_service.dart';
 // ignore: must_be_immutable
 class LoginPage extends StatefulWidget {
   TabController tabController;
-
   LoginPage(this.tabController, {super.key});
 
   @override
@@ -400,7 +400,6 @@ class _LoginPageState extends State<LoginPage> {
                         text: 'sign in',
                         ontap: () {
                           FocusManager.instance.primaryFocus?.unfocus();
-                          //  print("Admin==========>$isAdmin");
                           if (_loginKey.currentState!.validate()) {
                             String email = tEmail.text;
                             String password = tPassword.text;
@@ -416,7 +415,7 @@ class _LoginPageState extends State<LoginPage> {
                         onTap: () async {
                           service.signInWithGoogle(
                               widget.tabController, isAdmin);
-                          // widget.tabController, isAdmin);
+                          //await GoogleSignIn().signOut();
                         },
                         child: Container(
                           height: 40,

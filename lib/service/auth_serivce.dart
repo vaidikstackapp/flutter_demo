@@ -5,7 +5,6 @@ import 'package:flutter_demo/common/widget/app_toast.dart';
 import 'package:flutter_demo/service/user_service.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import '../common/constants/color_constant.dart';
 import '../model/user_model.dart';
@@ -14,6 +13,7 @@ class AuthService {
   UserService userService = UserService();
   GoogleSignIn googleSignIn = GoogleSignIn();
   FirebaseAuth? auth = FirebaseAuth.instance;
+
   // ===================signUpWithEmailPassword=================//
 
   void signUpWithEmailPassword(
@@ -50,6 +50,7 @@ class AuthService {
           uid: user.uid,
         );
         await userService.createUser(userModel);
+        appToast("Sign up successfully");
       }
       EasyLoading.dismiss();
     } on FirebaseAuthException catch (e) {
@@ -120,49 +121,65 @@ class AuthService {
   Future<UserCredential> signInWithGoogle(
       TabController tabController, bool isAdmin) async {
     // Trigger the authentication flow
+    // EasyLoading.show(
+    //     indicator: SpinKitCircle(
+    //   color: ColorConstants.commonColor,
+    // ));
     final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
 
-    final GoogleSignInAuthentication? googleAuth =
-        await googleUser?.authentication;
+    if (googleUser != null) {
+      final GoogleSignInAuthentication googleAuth =
+          await googleUser.authentication;
 
-    final credential = GoogleAuthProvider.credential(
-      accessToken: googleAuth?.accessToken,
-      idToken: googleAuth?.idToken,
-    );
+      if (googleAuth.idToken != null) {
+        final credential = GoogleAuthProvider.credential(
+          accessToken: googleAuth.accessToken,
+          idToken: googleAuth.idToken,
+        );
 
-    //print("idToken --> ${auth!.currentUser!.uid}");
-    // Future<List<UserModel>?> list = userService.getAllUser();
+        // print("CURRENT--------->${auth!.currentUser!.uid}");
 
-    List<UserModel?>? l = await userService.getAllUser();
-    if (l != null && auth!.currentUser != null) {
-      UserModel? userModel = l.firstWhere(
-        (element) => element!.uid != auth!.currentUser!.uid,
-        orElse: () => UserModel(),
-      );
-      // UserModel userModel = UserModel(
-      //   phoneNumber: '',
-      //   birthdate: '',
-      //   name: googleUser!.displayName ?? "",
-      //   email: googleUser.email,
-      //   uid: auth!.currentUser!.uid,
-      //   gender: '',
-      //   profileImage: googleUser.photoUrl,
-      // );
-      UserService().createUser(userModel!);
-    }
-    if (isAdmin) {
-      tabController.animateTo(tabController.index + 1);
+        List<UserModel?>? l = await userService.getAllUser();
+
+        if (l != null) {
+          UserModel? userModel = l.firstWhere(
+            (element) => element!.uid != auth!.currentUser!.uid,
+            orElse: () => UserModel(),
+          );
+          print("Goggle_user_model---->${userModel!.toJson()}");
+          UserService().createUser(UserModel(
+              uid: auth!.currentUser!.uid,
+              name: googleUser.displayName,
+              gender: "",
+              phoneNumber: "",
+              birthdate: "",
+              email: googleUser.email,
+              profileImage: googleUser.photoUrl));
+        }
+        if (isAdmin) {
+          tabController.animateTo(tabController.index + 1);
+        } else {
+          tabController.animateTo(tabController.index + 2);
+        }
+        return await FirebaseAuth.instance.signInWithCredential(credential);
+      } else {
+        throw FirebaseAuthException(
+            code: 'ERROR_MISSING_GOOGLE_ID_TOKEN',
+            message: 'missing google id token');
+      }
     } else {
-      tabController.animateTo(tabController.index + 2);
+      throw FirebaseAuthException(
+          code: 'ERROR_ABORTED_BY_USER', message: "sign in aborted by user");
     }
-    //
-    // print("list---------------->$tmp");
-    // Once signed in, return the UserCredential
-    return await FirebaseAuth.instance.signInWithCredential(credential);
   }
 
-  signOutWithGoogle(TabController? tabController) {
-    googleSignIn.signOut();
+  signOutWithGoogle(TabController? tabController) async {
+    try {
+      await googleSignIn.signOut();
+      await auth!.signOut();
+    } on FirebaseException catch (e) {
+      print('Cath exception of signOutWithGoogle : ${e.message}');
+    }
     tabController!.animateTo(tabController.index - 2);
   }
 
@@ -170,6 +187,6 @@ class AuthService {
 
   signOutWithEmailPassword(TabController? tabController) async {
     await auth!.signOut();
-    tabController!.animateTo(tabController.index - 2);
+    //tabController!.animateTo(tabController.index - 2);
   }
 }

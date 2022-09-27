@@ -1,4 +1,7 @@
+import 'dart:developer';
+
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_demo/common/constants/string_constsnt.dart';
 import 'package:flutter_demo/common/widget/app_button.dart';
@@ -9,7 +12,7 @@ import 'package:flutter_demo/common/widget/app_toast.dart';
 import 'package:flutter_demo/model/user_model.dart';
 import 'package:flutter_demo/service/auth_serivce.dart';
 import 'package:flutter_demo/service/user_service.dart';
-import 'package:fluttertoast/fluttertoast.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:intl/intl.dart';
 
 import '../common/constants/color_constant.dart';
@@ -48,17 +51,17 @@ class _SingleUserState extends State<SingleUser> {
   UserModel? userModel;
 
   Future<void> getCurrentUser() async {
-    print("uid------------>${auth.currentUser}");
-    if (auth.currentUser!.uid.isNotEmpty) {
+    // print("");
+    log('uid------------>${auth.currentUser!.uid}');
+    if (auth.currentUser != null) {
       userModel = await userService.getCurrentUser(id: auth.currentUser!.uid);
+      print("auth.currentUser-------->${auth.currentUser!.uid}");
+      nameController.text = userModel!.name!;
+      emailController.text = userModel!.email!;
+      contactController.text = userModel!.phoneNumber!;
+      birthdateController.text = userModel!.birthdate!;
+      gender = userModel!.gender!;
     }
-    //auth.currentUser!.reload();
-    nameController.text = userModel!.name!;
-    emailController.text = userModel!.email!;
-    contactController.text = userModel!.phoneNumber!;
-    birthdateController.text = userModel!.birthdate!;
-    gender = userModel!.gender!;
-
     if (gender == 'Male') {
       checkGender = true;
     } else {
@@ -91,7 +94,7 @@ class _SingleUserState extends State<SingleUser> {
                       fontSize: 20,
                       color: ColorConstants.black,
                     ),
-                    (userModel!.profileImage != null)
+                    (userModel!.profileImage == null)
                         ? Container(
                             height: 100,
                             width: 100,
@@ -118,6 +121,16 @@ class _SingleUserState extends State<SingleUser> {
                                   width: 100,
                                   "${userModel!.profileImage}",
                                   fit: BoxFit.cover,
+                                  loadingBuilder:
+                                      (context, child, loadingProgress) {
+                                    if (loadingProgress == null) {
+                                      return child;
+                                    }
+                                    return Center(
+                                        child: SpinKitCircle(
+                                      color: ColorConstants.commonColor,
+                                    ));
+                                  },
                                 )),
                           ),
                     AppTextField(
@@ -238,8 +251,10 @@ class _SingleUserState extends State<SingleUser> {
                                   birthdate: birthdate,
                                   phoneNumber: contact);
 
-                              print(
-                                  "updateModel------------------->${updateModel.toJson()}");
+                              if (kDebugMode) {
+                                print(
+                                    "updateModel------------------->${updateModel.toJson()}");
+                              }
                               userService.updateData(
                                   uid: userModel!.uid, userModel: updateModel);
                               readonly = true;
@@ -247,7 +262,7 @@ class _SingleUserState extends State<SingleUser> {
                               setState(() {});
                             },
                           ),
-                    (userModel!.profileImage != null)
+                    (userModel!.profileImage == null)
                         ? AppButton(
                             ontap: () {
                               AuthService().signOutWithEmailPassword(
@@ -271,7 +286,10 @@ class _SingleUserState extends State<SingleUser> {
                 ),
               ),
             )
-          : const Center(child: CircularProgressIndicator()),
+          : Center(
+              child: SpinKitCircle(
+              color: ColorConstants.commonColor,
+            )),
     );
   }
 }
