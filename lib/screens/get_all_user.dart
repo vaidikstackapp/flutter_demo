@@ -32,6 +32,7 @@ class _GetAllUserState extends State<GetAllUser> {
                       trailing: IconButton(
                           onPressed: () {
                             showDialog(
+                              barrierDismissible: false,
                               context: context,
                               builder: (context) {
                                 return AlertDialog(

@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_demo/common/widget/app_toast.dart';
@@ -10,13 +11,10 @@ class UserService {
   //-------------------------------Create User------------------------------------------//
   Future<void> createUser(UserModel userModel) async {
     print('CREATE USER----------->${userModel.toJson()}');
-
     try {
       await userCollection.doc(userModel.uid).set(userModel.toJson());
     } on FirebaseException catch (e) {
-      if (kDebugMode) {
-        print("Catch Exception in createUser : ${e.message}");
-      }
+      appToast(e.code.toString());
     }
   }
 
@@ -35,6 +33,7 @@ class UserService {
       return allUser;
     } on FirebaseException catch (e) {
       print("Catch Exception in getAllUser : ${e.message}");
+      appToast(e.code.toString());
 
       return null;
     }
@@ -54,6 +53,7 @@ class UserService {
     } on FirebaseException catch (e) {
       if (kDebugMode) {
         print("Catch Exception in getCurrentUser : ${e.message}");
+        appToast(e.code.toString());
       }
       return null;
     }
@@ -66,6 +66,7 @@ class UserService {
     } on FirebaseException catch (e) {
       if (kDebugMode) {
         print("Catch Exception in deleteUser : ${e.message}");
+        appToast(e.code.toString());
       }
     }
   }
@@ -73,12 +74,12 @@ class UserService {
   Future<void> updateData({String? uid, UserModel? userModel}) async {
     try {
       Map<String, dynamic> map = userModel!.toJson();
-      print("userMap------------->$map");
+      log("userMap------------->$map");
       await userCollection.doc(uid).update(map);
-
       appToast('Update Successfully');
     } on FirebaseException catch (e) {
-      print("Catch exception upDateData-------->${e.code}");
+      log("Catch exception upDateData-------->${e.code}");
+      appToast(e.code.toString());
     }
   }
 }

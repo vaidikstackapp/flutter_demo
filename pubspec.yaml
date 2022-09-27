@@ -43,7 +43,7 @@ dependencies:
   firebase_core: ^1.23.0
   google_sign_in: ^5.4.2
   cloud_firestore: ^3.4.9
-
+  flutter_facebook_auth: ^4.4.1+1
   #massenger
   fluttertoast: ^8.0.9
 

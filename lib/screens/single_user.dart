@@ -55,7 +55,7 @@ class _SingleUserState extends State<SingleUser> {
     log('uid------------>${auth.currentUser!.uid}');
     if (auth.currentUser != null) {
       userModel = await userService.getCurrentUser(id: auth.currentUser!.uid);
-      print("auth.currentUser-------->${auth.currentUser!.uid}");
+      log("auth.currentUser-------->${auth.currentUser!.uid}");
       nameController.text = userModel!.name!;
       emailController.text = userModel!.email!;
       contactController.text = userModel!.phoneNumber!;

@@ -3,7 +3,6 @@ import 'package:flutter_demo/common/widget/app_button.dart';
 import 'package:flutter_demo/common/widget/app_text.dart';
 import 'package:flutter_demo/common/widget/app_textfield.dart';
 import 'package:flutter_demo/service/auth_serivce.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 import 'package:intl/intl.dart';
 import '../common/constants/color_constant.dart';
 import '../common/constants/string_constsnt.dart';
