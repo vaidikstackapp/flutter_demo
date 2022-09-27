@@ -109,6 +109,8 @@ class AuthService {
         appToast("wrong-password");
       }
       EasyLoading.dismiss();
+    } finally {
+      EasyLoading.dismiss();
     }
     EasyLoading.dismiss();
   }
