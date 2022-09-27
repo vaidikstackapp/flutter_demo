@@ -1,8 +1,11 @@
 import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter_demo/common/constants/color_constant.dart';
 import 'package:flutter_demo/common/widget/app_toast.dart';
 import 'package:flutter_demo/model/user_model.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class UserService {
   final CollectionReference userCollection =
@@ -10,7 +13,7 @@ class UserService {
 
   //-------------------------------Create User------------------------------------------//
   Future<void> createUser(UserModel userModel) async {
-    print('CREATE USER----------->${userModel.toJson()}');
+    log('CREATE USER----------->${userModel.toJson()}');
     try {
       await userCollection.doc(userModel.uid).set(userModel.toJson());
     } on FirebaseException catch (e) {
@@ -32,7 +35,7 @@ class UserService {
       }
       return allUser;
     } on FirebaseException catch (e) {
-      print("Catch Exception in getAllUser : ${e.message}");
+      log("Catch Exception in getAllUser : ${e.message}");
       appToast(e.code.toString());
 
       return null;
@@ -73,6 +76,10 @@ class UserService {
 
   Future<void> updateData({String? uid, UserModel? userModel}) async {
     try {
+      EasyLoading.show(
+          indicator: SpinKitCircle(
+        color: ColorConstants.commonColor,
+      ));
       Map<String, dynamic> map = userModel!.toJson();
       log("userMap------------->$map");
       await userCollection.doc(uid).update(map);
@@ -80,6 +87,8 @@ class UserService {
     } on FirebaseException catch (e) {
       log("Catch exception upDateData-------->${e.code}");
       appToast(e.code.toString());
+    } finally {
+      EasyLoading.dismiss();
     }
   }
 }

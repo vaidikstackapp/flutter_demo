@@ -27,8 +27,10 @@ class _GetAllUserState extends State<GetAllUser> {
                 return ListView.builder(
                   itemCount: list.length,
                   itemBuilder: (context, index) {
+                    UserModel userModel = list[index];
                     return ListTile(
-                      title: AppText(text: list[index].name),
+                      title: AppText(text: userModel.name),
+                      subtitle: AppText(text: userModel.email),
                       trailing: IconButton(
                           onPressed: () {
                             showDialog(

@@ -3,7 +3,6 @@ import 'dart:developer';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_demo/common/constants/string_constsnt.dart';
 import 'package:flutter_demo/common/widget/app_button.dart';
 import 'package:flutter_demo/common/widget/app_snackbar.dart';
 import 'package:flutter_demo/common/widget/app_text.dart';
@@ -42,6 +41,7 @@ class _SingleUserState extends State<SingleUser> {
   TextEditingController genderController = TextEditingController();
   bool? checkGender;
   String gender = '';
+
   @override
   void initState() {
     super.initState();
@@ -94,7 +94,7 @@ class _SingleUserState extends State<SingleUser> {
                       fontSize: 20,
                       color: ColorConstants.black,
                     ),
-                    (userModel!.profileImage == null)
+                    (userModel!.profileImage!.isEmpty)
                         ? Container(
                             height: 100,
                             width: 100,
@@ -262,26 +262,13 @@ class _SingleUserState extends State<SingleUser> {
                               setState(() {});
                             },
                           ),
-                    (userModel!.profileImage == null)
-                        ? AppButton(
-                            ontap: () {
-                              AuthService().signOutWithEmailPassword(
-                                  widget.tabController);
-
-                              appSnackBar(context,
-                                  text: "Log out successfully!");
-                            },
-                            text: StringConstants.logoutButtonText,
-                          )
-                        : AppButton(
-                            ontap: () {
-                              AuthService()
-                                  .signOutWithGoogle(widget.tabController);
-                              appSnackBar(context,
-                                  text: "Log out successfully!");
-                            },
-                            text: StringConstants.logoutGoogleButtonText,
-                          ),
+                    AppButton(
+                      ontap: () {
+                        AuthService().signOut(widget.tabController);
+                        appSnackBar(context, text: "Log out successfully!");
+                      },
+                      text: 'logout',
+                    ),
                   ],
                 ),
               ),
