@@ -104,9 +104,6 @@ class AuthService {
       EasyLoading.dismiss();
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
-        if (kDebugMode) {
-          print('No user found for that email.');
-        }
         appToast("No user found for that email");
       } else if (e.code == 'wrong-password') {
         appToast("wrong-password");
