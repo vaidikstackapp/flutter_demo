@@ -14,11 +14,13 @@ class GetAllUser extends StatefulWidget {
 }
 
 class _GetAllUserState extends State<GetAllUser> {
+  UserService userService = UserService();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: FutureBuilder(
-        future: UserService().getAllUser(),
+        future: userService.getAllUser(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
             if (snapshot.hasData) {
@@ -52,8 +54,6 @@ class _GetAllUserState extends State<GetAllUser> {
                                   actions: [
                                     ElevatedButton(
                                         onPressed: () {
-                                          UserService userService =
-                                              UserService();
                                           userService
                                               .deleteUser(list[index].uid);
                                           Navigator.pop(context);

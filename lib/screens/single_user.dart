@@ -56,11 +56,15 @@ class _SingleUserState extends State<SingleUser> {
     if (auth.currentUser != null) {
       userModel = await userService.getCurrentUser(id: auth.currentUser!.uid);
       log("auth.currentUser-------->${auth.currentUser!.uid}");
-      nameController.text = userModel!.name!;
-      emailController.text = userModel!.email!;
-      contactController.text = userModel!.phoneNumber!;
-      birthdateController.text = userModel!.birthdate!;
-      gender = userModel!.gender!;
+      if (userModel != null) {
+        nameController.text = userModel!.name!;
+        emailController.text = userModel!.email!;
+        contactController.text = userModel!.phoneNumber!;
+        birthdateController.text = userModel!.birthdate!;
+        gender = userModel!.gender!;
+      } else {
+        auth.currentUser!.reload();
+      }
     }
     if (gender == 'Male') {
       checkGender = true;
@@ -78,200 +82,204 @@ class _SingleUserState extends State<SingleUser> {
     return Scaffold(
       body: (statusCheck)
           ? Center(
-              child: Container(
-                margin:
-                    const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
-                child: ListView(
-                  shrinkWrap: true,
-                  physics: const BouncingScrollPhysics(),
-                  children: [
-                    AppText(
-                      text: "Profile",
-                      textAlign: TextAlign.center,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20,
-                      color: ColorConstants.black,
-                    ),
-                    (userModel!.profileImage!.isEmpty)
-                        ? Container(
-                            height: 100,
-                            width: 100,
-                            decoration: const BoxDecoration(
-                              shape: BoxShape.circle,
-                            ),
-                            child: Image.asset(
-                              'assets/images/user.png',
-                              fit: BoxFit.contain,
-                            ),
-                          )
-                        : Container(
-                            alignment: Alignment.center,
-                            decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                border: Border.all(
-                                    width: 1.5,
-                                    color: ColorConstants.commonColor)),
-                            child: ClipRRect(
-                                borderRadius:
-                                    BorderRadiusDirectional.circular(80),
-                                child: Image.network(
-                                  height: 100,
-                                  width: 100,
-                                  "${userModel!.profileImage}",
-                                  fit: BoxFit.cover,
-                                  loadingBuilder:
-                                      (context, child, loadingProgress) {
-                                    if (loadingProgress == null) {
-                                      return child;
-                                    }
-                                    return Center(
-                                        child: SpinKitCircle(
-                                      color: ColorConstants.commonColor,
-                                    ));
-                                  },
-                                )),
-                          ),
-                    AppTextField(
-                        readonly: readonly,
-                        lable: "Name",
-                        textEditingController: nameController),
-                    if (userModel!.email != null &&
-                        userModel!.email!.isNotEmpty)
-                      AppTextField(
-                          readonly: true,
-                          lable: "Email",
-                          textEditingController: emailController),
-                    if (userModel!.phoneNumber != null &&
-                        userModel!.phoneNumber!.isNotEmpty)
-                      AppTextField(
-                          readonly: readonly,
-                          lable: "contact",
-                          textEditingController: contactController),
-                    if (userModel!.birthdate != null &&
-                        userModel!.birthdate!.isNotEmpty)
-                      AppTextField(
-                        textEditingController: birthdateController,
-                        readonly: true,
-                        lable: 'Birthdate',
-                        validator: (value) {
-                          if (value!.isEmpty) {
-                            return "Select birth date";
-                          }
-                          return null;
-                        },
-                        suffixIcon: GestureDetector(
-                            onTap: () async {
-                              DateTime? pickDate = await showDatePicker(
-                                context: context,
-                                initialDate: DateTime.now(),
-                                firstDate: DateTime(1995),
-                                lastDate: DateTime.now(),
-                                builder: (context, child) {
-                                  return Theme(
-                                      data: Theme.of(context).copyWith(
-                                          colorScheme: ColorScheme.light(
-                                              primary:
-                                                  ColorConstants.commonColor)),
-                                      child: child!);
-                                },
-                              );
-                              if (pickDate != null) {
-                                birthdateController.text =
-                                    "${pickDate.day} ${DateFormat.yMMM().format(pickDate)}";
-                              }
-                              setState(() {});
-                            },
-                            child: Icon(
-                              Icons.calendar_today,
-                              color: ColorConstants.commonColor,
-                            )),
-                      ),
-                    if (userModel!.gender != null &&
-                        userModel!.gender!.isNotEmpty)
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
+              child: (userModel != null)
+                  ? Container(
+                      margin: const EdgeInsets.symmetric(
+                          horizontal: 10, vertical: 15),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 10, vertical: 15),
+                      child: ListView(
+                        shrinkWrap: true,
+                        physics: const BouncingScrollPhysics(),
                         children: [
                           AppText(
-                            text: "Gender :",
+                            text: "Profile",
+                            textAlign: TextAlign.center,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 20,
                             color: ColorConstants.black,
                           ),
-                          Radio(
-                            value: true,
-                            groupValue: checkGender,
-                            onChanged: (value) {
-                              checkGender = !checkGender!;
-                              gender = "Male";
-                              setState(() {});
+                          (userModel!.profileImage!.isEmpty)
+                              ? Container(
+                                  height: 100,
+                                  width: 100,
+                                  decoration: const BoxDecoration(
+                                    shape: BoxShape.circle,
+                                  ),
+                                  child: Image.asset(
+                                    'assets/images/user.png',
+                                    fit: BoxFit.contain,
+                                  ),
+                                )
+                              : Container(
+                                  alignment: Alignment.center,
+                                  decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      border: Border.all(
+                                          width: 1.5,
+                                          color: ColorConstants.commonColor)),
+                                  child: ClipRRect(
+                                      borderRadius:
+                                          BorderRadiusDirectional.circular(80),
+                                      child: Image.network(
+                                        height: 100,
+                                        width: 100,
+                                        "${userModel!.profileImage}",
+                                        fit: BoxFit.cover,
+                                        loadingBuilder:
+                                            (context, child, loadingProgress) {
+                                          if (loadingProgress == null) {
+                                            return child;
+                                          }
+                                          return Center(
+                                              child: SpinKitCircle(
+                                            color: ColorConstants.commonColor,
+                                          ));
+                                        },
+                                      )),
+                                ),
+                          AppTextField(
+                              readonly: readonly,
+                              lable: "Name",
+                              textEditingController: nameController),
+                          if (userModel!.email != null &&
+                              userModel!.email!.isNotEmpty)
+                            AppTextField(
+                                readonly: true,
+                                lable: "Email",
+                                textEditingController: emailController),
+                          if (userModel!.phoneNumber != null &&
+                              userModel!.phoneNumber!.isNotEmpty)
+                            AppTextField(
+                                readonly: readonly,
+                                lable: "contact",
+                                textEditingController: contactController),
+                          if (userModel!.birthdate != null &&
+                              userModel!.birthdate!.isNotEmpty)
+                            AppTextField(
+                              textEditingController: birthdateController,
+                              readonly: true,
+                              lable: 'Birthdate',
+                              validator: (value) {
+                                if (value!.isEmpty) {
+                                  return "Select birth date";
+                                }
+                                return null;
+                              },
+                              suffixIcon: GestureDetector(
+                                  onTap: () async {
+                                    DateTime? pickDate = await showDatePicker(
+                                      context: context,
+                                      initialDate: DateTime.now(),
+                                      firstDate: DateTime(1995),
+                                      lastDate: DateTime.now(),
+                                      builder: (context, child) {
+                                        return Theme(
+                                            data: Theme.of(context).copyWith(
+                                                colorScheme: ColorScheme.light(
+                                                    primary: ColorConstants
+                                                        .commonColor)),
+                                            child: child!);
+                                      },
+                                    );
+                                    if (pickDate != null) {
+                                      birthdateController.text =
+                                          "${pickDate.day} ${DateFormat.yMMM().format(pickDate)}";
+                                    }
+                                    setState(() {});
+                                  },
+                                  child: Icon(
+                                    Icons.calendar_today,
+                                    color: ColorConstants.commonColor,
+                                  )),
+                            ),
+                          if (userModel!.gender != null &&
+                              userModel!.gender!.isNotEmpty)
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                AppText(
+                                  text: "Gender :",
+                                  color: ColorConstants.black,
+                                ),
+                                Radio(
+                                  value: true,
+                                  groupValue: checkGender,
+                                  onChanged: (value) {
+                                    checkGender = !checkGender!;
+                                    gender = "Male";
+                                    setState(() {});
+                                  },
+                                ),
+                                AppText(
+                                  text: "Male",
+                                  color: ColorConstants.black,
+                                ),
+                                Radio(
+                                  value: false,
+                                  groupValue: checkGender,
+                                  onChanged: (value) {
+                                    checkGender = !checkGender!;
+                                    gender = "Female";
+                                    setState(() {});
+                                  },
+                                ),
+                                AppText(
+                                  text: "Female",
+                                  color: ColorConstants.black,
+                                ),
+                              ],
+                            ),
+                          (readonly)
+                              ? AppButton(
+                                  text: "Edit",
+                                  ontap: () {
+                                    readonly = false;
+                                    appToast("Edit your details");
+                                    setState(() {});
+                                  },
+                                )
+                              : AppButton(
+                                  text: "Update",
+                                  ontap: () {
+                                    String name = nameController.text;
+                                    String email = emailController.text;
+                                    String contact = contactController.text;
+                                    String birthdate = birthdateController.text;
+
+                                    UserModel updateModel = UserModel(
+                                        profileImage: "",
+                                        gender: gender,
+                                        uid: userModel!.uid,
+                                        email: email,
+                                        name: name,
+                                        birthdate: birthdate,
+                                        phoneNumber: contact);
+
+                                    if (kDebugMode) {
+                                      print(
+                                          "updateModel------------------->${updateModel.toJson()}");
+                                    }
+                                    userService.updateData(
+                                        uid: userModel!.uid,
+                                        userModel: updateModel);
+                                    readonly = true;
+                                    //nameController.clear();
+                                    setState(() {});
+                                  },
+                                ),
+                          AppButton(
+                            ontap: () {
+                              AuthService().signOut(widget.tabController);
+                              appSnackBar(context,
+                                  text: "Log out successfully!");
                             },
-                          ),
-                          AppText(
-                            text: "Male",
-                            color: ColorConstants.black,
-                          ),
-                          Radio(
-                            value: false,
-                            groupValue: checkGender,
-                            onChanged: (value) {
-                              checkGender = !checkGender!;
-                              gender = "Female";
-                              setState(() {});
-                            },
-                          ),
-                          AppText(
-                            text: "Female",
-                            color: ColorConstants.black,
+                            text: 'logout',
                           ),
                         ],
                       ),
-                    (readonly)
-                        ? AppButton(
-                            text: "Edit",
-                            ontap: () {
-                              readonly = false;
-                              appToast("Edit your details");
-                              setState(() {});
-                            },
-                          )
-                        : AppButton(
-                            text: "Update",
-                            ontap: () {
-                              String name = nameController.text;
-                              String email = emailController.text;
-                              String contact = contactController.text;
-                              String birthdate = birthdateController.text;
-
-                              UserModel updateModel = UserModel(
-                                  profileImage: "",
-                                  gender: gender,
-                                  uid: userModel!.uid,
-                                  email: email,
-                                  name: name,
-                                  birthdate: birthdate,
-                                  phoneNumber: contact);
-
-                              if (kDebugMode) {
-                                print(
-                                    "updateModel------------------->${updateModel.toJson()}");
-                              }
-                              userService.updateData(
-                                  uid: userModel!.uid, userModel: updateModel);
-                              readonly = true;
-                              //nameController.clear();
-                              setState(() {});
-                            },
-                          ),
-                    AppButton(
-                      ontap: () {
-                        AuthService().signOut(widget.tabController);
-                        appSnackBar(context, text: "Log out successfully!");
-                      },
-                      text: 'logout',
-                    ),
-                  ],
-                ),
-              ),
+                    )
+                  : const AppText(text: "No data found"),
             )
           : Center(
               child: SpinKitCircle(
